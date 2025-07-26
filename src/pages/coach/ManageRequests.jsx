@@ -1,470 +1,582 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import CoachNavbar from '../../components/layout/CoachNavbar';
+import { Search, Eye, Check, X, User, Calendar, Target, Ruler, Weight, Activity, Clock, MessageSquare } from 'lucide-react';
 
-const RequestNewExercise = () => {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        exerciseName: '',
-        targetMuscleGroup: '',
-        requiredEquipment: '',
-        customEquipment: '',
-        exerciseType: '',
-        description: '',
-        mediaFile: null
+const ManageRequests = () => {
+    // Mock data for subscription requests
+    const initialRequests = [
+        {
+            id: 1,
+            trainee: {
+                name: "Sarah Johnson",
+                avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=64&h=64&fit=crop&crop=face",
+                email: "sarah.j@email.com",
+                age: 28,
+                height: "5'6\"",
+                weight: "140 lbs",
+                fitnessLevel: "Intermediate",
+                goal: "Weight Loss & Toning",
+                experience: "2 years",
+                medicalConditions: "None",
+                preferredWorkoutTime: "Morning (6-8 AM)",
+                notes: "Looking to lose 15 lbs and build lean muscle. Available Mon-Fri mornings."
+            },
+            requestDate: "2025-07-24",
+            status: "pending",
+            message: "Hi! I'm looking for a personal trainer to help me achieve my weight loss goals. I have some experience but need guidance on proper form and nutrition."
+        },
+        {
+            id: 2,
+            trainee: {
+                name: "Mike Chen",
+                avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop&crop=face",
+                email: "mike.chen@email.com",
+                age: 35,
+                height: "5'10\"",
+                weight: "185 lbs",
+                fitnessLevel: "Beginner",
+                goal: "Muscle Building",
+                experience: "6 months",
+                medicalConditions: "Previous knee injury (recovered)",
+                preferredWorkoutTime: "Evening (6-8 PM)",
+                notes: "Former athlete looking to get back in shape. Need to work around old knee injury."
+            },
+            requestDate: "2025-07-23",
+            status: "accepted",
+            message: "I'm a former college athlete looking to get back into serious training. Can you help me build a program that works around my old knee injury?"
+        },
+        {
+            id: 3,
+            trainee: {
+                name: "Emma Rodriguez",
+                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face",
+                email: "emma.r@email.com",
+                age: 24,
+                height: "5'4\"",
+                weight: "125 lbs",
+                fitnessLevel: "Advanced",
+                goal: "Competition Prep",
+                experience: "5 years",
+                medicalConditions: "None",
+                preferredWorkoutTime: "Flexible",
+                notes: "Preparing for fitness competition in 6 months. Need specialized training and nutrition guidance."
+            },
+            requestDate: "2025-07-22",
+            status: "pending",
+            message: "I'm preparing for my first fitness competition and need an experienced coach to guide me through the final 6 months of prep."
+        },
+        {
+            id: 4,
+            trainee: {
+                name: "David Wilson",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face",
+                email: "david.w@email.com",
+                age: 42,
+                height: "6'1\"",
+                weight: "200 lbs",
+                fitnessLevel: "Intermediate",
+                goal: "General Fitness",
+                experience: "3 years",
+                medicalConditions: "High blood pressure (controlled)",
+                preferredWorkoutTime: "Morning (5-7 AM)",
+                notes: "Busy executive looking to maintain fitness and reduce stress through exercise."
+            },
+            requestDate: "2025-07-21",
+            status: "rejected",
+            message: "Looking for early morning training sessions to fit my busy executive schedule. Need help with stress management through fitness."
+        },
+        {
+            id: 5,
+            trainee: {
+                name: "Lisa Park",
+                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=64&h=64&fit=crop&crop=face",
+                email: "lisa.park@email.com",
+                age: 31,
+                height: "5'7\"",
+                weight: "155 lbs",
+                fitnessLevel: "Beginner",
+                goal: "Postpartum Recovery",
+                experience: "New to fitness",
+                medicalConditions: "Recent childbirth (6 months ago)",
+                preferredWorkoutTime: "Afternoon (1-3 PM)",
+                notes: "New mom looking to regain strength and energy. Need gentle but effective program."
+            },
+            requestDate: "2025-07-20",
+            status: "cancelled",
+            message: "I'm a new mom looking to get back into shape safely. I need guidance on postpartum fitness and rebuilding my core strength."
+        }
+    ];
+
+    const [requests, setRequests] = useState(initialRequests);
+    const [activeTab, setActiveTab] = useState('all');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedRequest, setSelectedRequest] = useState(null);
+    const [showDetailModal, setShowDetailModal] = useState(false);
+    const [showRejectModal, setShowRejectModal] = useState(false);
+    const [rejectReason, setRejectReason] = useState('');
+    const [coachNotes, setCoachNotes] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const tabs = [
+        { id: 'all', label: 'All', count: requests.length },
+        { id: 'pending', label: 'Pending', count: requests.filter(r => r.status === 'pending').length },
+        { id: 'accepted', label: 'Accepted', count: requests.filter(r => r.status === 'accepted').length },
+        { id: 'rejected', label: 'Rejected', count: requests.filter(r => r.status === 'rejected').length },
+        { id: 'cancelled', label: 'Cancelled', count: requests.filter(r => r.status === 'cancelled').length }
+    ];
+
+    const filteredRequests = requests.filter(request => {
+        const matchesTab = activeTab === 'all' || request.status === activeTab;
+        const matchesSearch = request.trainee.name.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesTab && matchesSearch;
     });
-    const [errors, setErrors] = useState({});
-    const [showSuccess, setShowSuccess] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const muscleGroups = [
-        'Chest',
-        'Legs',
-        'Back',
-        'Shoulders',
-        'Arms',
-        'Core'
-    ];
-
-    const equipmentOptions = [
-        'No Equipment',
-        'Dumbbells',
-        'Barbell',
-        'Resistance Bands',
-        'Pull-up Bar',
-        'Kettlebell',
-        'Medicine Ball',
-        'Cable Machine',
-        'Custom (specify below)'
-    ];
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-
-        // Clear error when user starts typing
-        if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }));
-        }
-    };
-
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            // Validate file type
-            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'video/mp4'];
-            if (validTypes.includes(file.type)) {
-                setFormData(prev => ({
-                    ...prev,
-                    mediaFile: file
-                }));
-                if (errors.mediaFile) {
-                    setErrors(prev => ({
-                        ...prev,
-                        mediaFile: ''
-                    }));
-                }
-            } else {
-                setErrors(prev => ({
-                    ...prev,
-                    mediaFile: 'Please upload a valid file (.jpg, .png, .mp4)'
-                }));
-            }
-        }
-    };
-
-    const validateForm = () => {
-        const newErrors = {};
-
-        if (!formData.exerciseName.trim()) {
-            newErrors.exerciseName = 'Exercise name is required';
-        }
-
-        if (!formData.targetMuscleGroup) {
-            newErrors.targetMuscleGroup = 'Please select a target muscle group';
-        }
-
-        if (!formData.requiredEquipment) {
-            newErrors.requiredEquipment = 'Please select required equipment';
-        }
-
-        if (formData.requiredEquipment === 'Custom (specify below)' && !formData.customEquipment.trim()) {
-            newErrors.customEquipment = 'Please specify the custom equipment';
-        }
-
-        if (!formData.exerciseType) {
-            newErrors.exerciseType = 'Please select an exercise type';
-        }
-
-        if (!formData.description.trim()) {
-            newErrors.description = 'Description/Instructions are required';
-        } else if (formData.description.trim().length < 20) {
-            newErrors.description = 'Please provide at least 20 characters for the description';
-        }
-
-        return newErrors;
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const validationErrors = validateForm();
-
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
-        }
-
-        setIsSubmitting(true);
-
+    const handleAcceptRequest = async (requestId) => {
+        setLoading(true);
         // Simulate API call
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
+        setTimeout(() => {
+            setRequests(prev => prev.map(req =>
+                req.id === requestId ? { ...req, status: 'accepted' } : req
+            ));
+            setLoading(false);
+        }, 1000);
+    };
 
-            // Show success message
-            setShowSuccess(true);
+    const handleRejectRequest = async (requestId) => {
+        setLoading(true);
+        // Simulate API call
+        setTimeout(() => {
+            setRequests(prev => prev.map(req =>
+                req.id === requestId ? { ...req, status: 'rejected' } : req
+            ));
+            setShowRejectModal(false);
+            setRejectReason('');
+            setLoading(false);
+        }, 1000);
+    };
 
-            // Reset form
-            setFormData({
-                exerciseName: '',
-                targetMuscleGroup: '',
-                requiredEquipment: '',
-                customEquipment: '',
-                exerciseType: '',
-                description: '',
-                mediaFile: null
-            });
+    const openDetailModal = (request) => {
+        setSelectedRequest(request);
+        setCoachNotes('');
+        setShowDetailModal(true);
+    };
 
-            // Clear file input
-            const fileInput = document.getElementById('mediaFile');
-            if (fileInput) fileInput.value = '';
+    const openRejectModal = (request) => {
+        setSelectedRequest(request);
+        setShowRejectModal(true);
+    };
 
-        } catch (error) {
-            console.error('Error submitting request:', error);
-        } finally {
-            setIsSubmitting(false);
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'pending': return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30';
+            case 'accepted': return 'bg-green-500/20 text-green-300 border-green-500/30';
+            case 'rejected': return 'bg-red-500/20 text-red-300 border-red-500/30';
+            case 'cancelled': return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+            default: return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
         }
     };
 
-    const closeSuccessModal = () => {
-        setShowSuccess(false);
-        navigate('/coach/dashboard'); // Navigate back to coach dashboard
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8 px-4">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4 lg:p-8">
+            <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="flex items-center text-blue-600 hover:text-blue-700 mb-4 transition-colors"
-                    >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                        Back
-                    </button>
-                    <h1 className="text-3xl font-bold text-gray-900">Request New Exercise</h1>
-                    <p className="text-gray-600 mt-2">
-                        Submit a request to add a new exercise to the FitHub workout library.
-                        All requests are reviewed by our admin team before being added.
+                    <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">
+                        Manage Subscription Requests
+                    </h1>
+                    <p className="text-slate-400">
+                        Review and respond to incoming training requests from potential trainees
                     </p>
                 </div>
 
-                {/* Form */}
-                <div className="bg-white rounded-xl shadow-lg p-8">
-                    <form onSubmit={handleSubmit} className="space-y-8">
-                        {/* Basic Information Section */}
-                        <div>
-                            <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-2">
-                                Basic Information
-                            </h2>
+                {/* Search Bar */}
+                <div className="mb-6">
+                    <div className="relative max-w-md">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+                        <input
+                            type="text"
+                            placeholder="Search by trainee name..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-200"
+                        />
+                    </div>
+                </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {/* Exercise Name */}
-                                <div>
-                                    <label htmlFor="exerciseName" className="block text-sm font-medium text-gray-700 mb-2">
-                                        Exercise Name *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="exerciseName"
-                                        name="exerciseName"
-                                        value={formData.exerciseName}
-                                        onChange={handleInputChange}
-                                        placeholder="e.g., Bulgarian Split Squat"
-                                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.exerciseName ? 'border-red-500' : 'border-gray-300'
-                                            }`}
-                                    />
-                                    {errors.exerciseName && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.exerciseName}</p>
-                                    )}
-                                </div>
+                {/* Filter Tabs */}
+                <div className="mb-8">
+                    <div className="flex flex-wrap gap-2">
+                        {tabs.map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 ${activeTab === tab.id
+                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25'
+                                    : 'bg-white/10 backdrop-blur-sm text-slate-300 hover:bg-white/20 border border-white/10'
+                                    }`}
+                            >
+                                {tab.label}
+                                <span className={`px-2 py-0.5 rounded-full text-xs ${activeTab === tab.id
+                                    ? 'bg-white/20 text-white'
+                                    : 'bg-slate-700 text-slate-300'
+                                    }`}>
+                                    {tab.count}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
-                                {/* Target Muscle Group */}
-                                <div>
-                                    <label htmlFor="targetMuscleGroup" className="block text-sm font-medium text-gray-700 mb-2">
-                                        Target Muscle Group *
-                                    </label>
-                                    <select
-                                        id="targetMuscleGroup"
-                                        name="targetMuscleGroup"
-                                        value={formData.targetMuscleGroup}
-                                        onChange={handleInputChange}
-                                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.targetMuscleGroup ? 'border-red-500' : 'border-gray-300'
-                                            }`}
-                                    >
-                                        <option value="">Select muscle group</option>
-                                        {muscleGroups.map(group => (
-                                            <option key={group} value={group}>{group}</option>
-                                        ))}
-                                    </select>
-                                    {errors.targetMuscleGroup && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.targetMuscleGroup}</p>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Equipment & Type Section */}
-                        <div>
-                            <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-2">
-                                Equipment & Type
-                            </h2>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {/* Required Equipment */}
-                                <div>
-                                    <label htmlFor="requiredEquipment" className="block text-sm font-medium text-gray-700 mb-2">
-                                        Required Equipment *
-                                    </label>
-                                    <select
-                                        id="requiredEquipment"
-                                        name="requiredEquipment"
-                                        value={formData.requiredEquipment}
-                                        onChange={handleInputChange}
-                                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.requiredEquipment ? 'border-red-500' : 'border-gray-300'
-                                            }`}
-                                    >
-                                        <option value="">Select equipment</option>
-                                        {equipmentOptions.map(equipment => (
-                                            <option key={equipment} value={equipment}>{equipment}</option>
-                                        ))}
-                                    </select>
-                                    {errors.requiredEquipment && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.requiredEquipment}</p>
-                                    )}
-                                </div>
-
-                                {/* Custom Equipment (conditional) */}
-                                {formData.requiredEquipment === 'Custom (specify below)' && (
-                                    <div>
-                                        <label htmlFor="customEquipment" className="block text-sm font-medium text-gray-700 mb-2">
-                                            Specify Custom Equipment *
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="customEquipment"
-                                            name="customEquipment"
-                                            value={formData.customEquipment}
-                                            onChange={handleInputChange}
-                                            placeholder="e.g., TRX Suspension Trainer"
-                                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.customEquipment ? 'border-red-500' : 'border-gray-300'
-                                                }`}
-                                        />
-                                        {errors.customEquipment && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.customEquipment}</p>
-                                        )}
-                                    </div>
-                                )}
-
-                                {/* Exercise Type */}
-                                <div className={formData.requiredEquipment === 'Custom (specify below)' ? 'md:col-span-2' : ''}>
-                                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                                        Exercise Type *
-                                    </label>
-                                    <div className="flex gap-6">
-                                        <label className="flex items-center">
-                                            <input
-                                                type="radio"
-                                                name="exerciseType"
-                                                value="reps-based"
-                                                checked={formData.exerciseType === 'reps-based'}
-                                                onChange={handleInputChange}
-                                                className="mr-2 text-blue-600 focus:ring-blue-500"
-                                            />
-                                            <span className="text-gray-700">Reps-based</span>
-                                        </label>
-                                        <label className="flex items-center">
-                                            <input
-                                                type="radio"
-                                                name="exerciseType"
-                                                value="time-based"
-                                                checked={formData.exerciseType === 'time-based'}
-                                                onChange={handleInputChange}
-                                                className="mr-2 text-blue-600 focus:ring-blue-500"
-                                            />
-                                            <span className="text-gray-700">Time-based</span>
-                                        </label>
-                                    </div>
-                                    {errors.exerciseType && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.exerciseType}</p>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Description Section */}
-                        <div>
-                            <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-2">
-                                Instructions & Media
-                            </h2>
-
-                            {/* Description */}
-                            <div className="mb-6">
-                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Description / Instructions *
-                                </label>
-                                <textarea
-                                    id="description"
-                                    name="description"
-                                    rows={6}
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                    placeholder="Provide detailed instructions for performing this exercise. Include:&#10;• Starting position&#10;• Step-by-step movement&#10;• Breathing technique&#10;• Common mistakes to avoid&#10;• Safety considerations"
-                                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical ${errors.description ? 'border-red-500' : 'border-gray-300'
-                                        }`}
+                {/* Request Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredRequests.map((request, index) => (
+                        <div
+                            key={request.id}
+                            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl animate-fade-in"
+                            style={{ animationDelay: `${index * 100}ms` }}
+                        >
+                            {/* Trainee Info */}
+                            <div className="flex items-center gap-4 mb-4">
+                                <img
+                                    src={request.trainee.avatar}
+                                    alt={request.trainee.name}
+                                    className="w-12 h-12 rounded-full object-cover ring-2 ring-white/20"
                                 />
-                                <div className="flex justify-between items-center mt-1">
-                                    {errors.description && (
-                                        <p className="text-red-500 text-sm">{errors.description}</p>
-                                    )}
-                                    <p className="text-gray-500 text-sm ml-auto">
-                                        {formData.description.length}/500 characters
+                                <div className="flex-1">
+                                    <h3 className="font-semibold text-white">
+                                        {request.trainee.name}
+                                    </h3>
+                                    <p className="text-sm text-slate-400">
+                                        {request.trainee.email}
                                     </p>
                                 </div>
+                                <div className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(request.status)}`}>
+                                    {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                                </div>
                             </div>
 
-                            {/* Media Upload */}
-                            <div>
-                                <label htmlFor="mediaFile" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Upload Media (Optional)
-                                </label>
-                                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-                                    <input
-                                        type="file"
-                                        id="mediaFile"
-                                        accept=".mp4,.jpg,.jpeg,.png"
-                                        onChange={handleFileChange}
-                                        className="hidden"
+                            {/* Request Details */}
+                            <div className="space-y-2 mb-4">
+                                <div className="flex items-center gap-2 text-sm text-slate-300">
+                                    <Target className="w-4 h-4 text-blue-400" />
+                                    <span>{request.trainee.goal}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-slate-300">
+                                    <Calendar className="w-4 h-4 text-green-400" />
+                                    <span>Requested on {formatDate(request.requestDate)}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-slate-300">
+                                    <Activity className="w-4 h-4 text-purple-400" />
+                                    <span>{request.trainee.fitnessLevel} Level</span>
+                                </div>
+                            </div>
+
+                            {/* Message Preview */}
+                            <div className="mb-4">
+                                <p className="text-sm text-slate-400 line-clamp-2">
+                                    "{request.message}"
+                                </p>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => openDetailModal(request)}
+                                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-slate-700/50 hover:bg-slate-600/50 text-white rounded-lg transition-colors duration-200"
+                                >
+                                    <Eye className="w-4 h-4" />
+                                    Details
+                                </button>
+
+                                {request.status === 'pending' && (
+                                    <>
+                                        <button
+                                            onClick={() => handleAcceptRequest(request.id)}
+                                            disabled={loading}
+                                            className="flex items-center justify-center px-4 py-2 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200"
+                                        >
+                                            <Check className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            onClick={() => openRejectModal(request)}
+                                            disabled={loading}
+                                            className="flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Empty State */}
+                {filteredRequests.length === 0 && (
+                    <div className="text-center py-12">
+                        <User className="w-16 h-16 text-slate-500 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-slate-300 mb-2">
+                            No requests found
+                        </h3>
+                        <p className="text-slate-500">
+                            {searchTerm
+                                ? `No requests match "${searchTerm}"`
+                                : `No ${activeTab === 'all' ? '' : activeTab} requests at the moment`
+                            }
+                        </p>
+                    </div>
+                )}
+
+                {/* Detail Modal */}
+                {showDetailModal && selectedRequest && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                        <div className="bg-slate-800 border border-white/20 rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-2xl font-bold text-white">Trainee Profile</h2>
+                                <button
+                                    onClick={() => setShowDetailModal(false)}
+                                    className="p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
+                                >
+                                    <X className="w-6 h-6 text-slate-400" />
+                                </button>
+                            </div>
+
+                            <div className="space-y-6">
+                                {/* Basic Info */}
+                                <div className="flex items-center gap-4 mb-6">
+                                    <img
+                                        src={selectedRequest.trainee.avatar}
+                                        alt={selectedRequest.trainee.name}
+                                        className="w-20 h-20 rounded-full object-cover ring-2 ring-white/20"
                                     />
-                                    <label htmlFor="mediaFile" className="cursor-pointer">
-                                        <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                        </svg>
-                                        <p className="text-gray-600 mb-1">
-                                            Click to upload or drag and drop
-                                        </p>
-                                        <p className="text-gray-500 text-sm">
-                                            MP4, JPG, PNG up to 10MB
-                                        </p>
-                                    </label>
+                                    <div>
+                                        <h3 className="text-xl font-semibold text-white">
+                                            {selectedRequest.trainee.name}
+                                        </h3>
+                                        <p className="text-slate-400">{selectedRequest.trainee.email}</p>
+                                        <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium border mt-2 ${getStatusColor(selectedRequest.status)}`}>
+                                            {selectedRequest.status.charAt(0).toUpperCase() + selectedRequest.status.slice(1)}
+                                        </div>
+                                    </div>
                                 </div>
 
-                                {formData.mediaFile && (
-                                    <div className="mt-3 p-3 bg-gray-50 rounded-lg flex items-center justify-between">
-                                        <div className="flex items-center">
-                                            <svg className="h-8 w-8 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-                                            </svg>
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-900">{formData.mediaFile.name}</p>
-                                                <p className="text-sm text-gray-500">
-                                                    {(formData.mediaFile.size / 1024 / 1024).toFixed(2)} MB
-                                                </p>
-                                            </div>
+                                {/* Details Grid */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <User className="w-4 h-4 text-blue-400" />
+                                            <span className="font-medium text-white">Age</span>
                                         </div>
+                                        <p className="text-slate-300">{selectedRequest.trainee.age} years old</p>
+                                    </div>
+
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Ruler className="w-4 h-4 text-green-400" />
+                                            <span className="font-medium text-white">Height</span>
+                                        </div>
+                                        <p className="text-slate-300">{selectedRequest.trainee.height}</p>
+                                    </div>
+
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Weight className="w-4 h-4 text-purple-400" />
+                                            <span className="font-medium text-white">Weight</span>
+                                        </div>
+                                        <p className="text-slate-300">{selectedRequest.trainee.weight}</p>
+                                    </div>
+
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Activity className="w-4 h-4 text-orange-400" />
+                                            <span className="font-medium text-white">Fitness Level</span>
+                                        </div>
+                                        <p className="text-slate-300">{selectedRequest.trainee.fitnessLevel}</p>
+                                    </div>
+
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Target className="w-4 h-4 text-red-400" />
+                                            <span className="font-medium text-white">Goal</span>
+                                        </div>
+                                        <p className="text-slate-300">{selectedRequest.trainee.goal}</p>
+                                    </div>
+
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Clock className="w-4 h-4 text-yellow-400" />
+                                            <span className="font-medium text-white">Preferred Time</span>
+                                        </div>
+                                        <p className="text-slate-300">{selectedRequest.trainee.preferredWorkoutTime}</p>
+                                    </div>
+                                </div>
+
+                                {/* Additional Info */}
+                                <div className="space-y-4">
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <h4 className="font-medium text-white mb-2">Experience</h4>
+                                        <p className="text-slate-300">{selectedRequest.trainee.experience}</p>
+                                    </div>
+
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <h4 className="font-medium text-white mb-2">Medical Conditions</h4>
+                                        <p className="text-slate-300">{selectedRequest.trainee.medicalConditions}</p>
+                                    </div>
+
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <h4 className="font-medium text-white mb-2">Initial Message</h4>
+                                        <p className="text-slate-300">"{selectedRequest.message}"</p>
+                                    </div>
+
+                                    <div className="bg-white/5 p-4 rounded-lg">
+                                        <h4 className="font-medium text-white mb-2">Additional Notes</h4>
+                                        <p className="text-slate-300">{selectedRequest.trainee.notes}</p>
+                                    </div>
+                                </div>
+
+                                {/* Coach Notes */}
+                                <div className="bg-white/5 p-4 rounded-lg">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <MessageSquare className="w-4 h-4 text-blue-400" />
+                                        <span className="font-medium text-white">Coach Notes</span>
+                                    </div>
+                                    <textarea
+                                        value={coachNotes}
+                                        onChange={(e) => setCoachNotes(e.target.value)}
+                                        placeholder="Add your notes about this trainee..."
+                                        className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none"
+                                        rows="3"
+                                    />
+                                </div>
+
+                                {/* Action Buttons */}
+                                {selectedRequest.status === 'pending' && (
+                                    <div className="flex gap-3">
                                         <button
-                                            type="button"
                                             onClick={() => {
-                                                setFormData(prev => ({ ...prev, mediaFile: null }));
-                                                document.getElementById('mediaFile').value = '';
+                                                handleAcceptRequest(selectedRequest.id);
+                                                setShowDetailModal(false);
                                             }}
-                                            className="text-red-600 hover:text-red-700 transition-colors"
+                                            disabled={loading}
+                                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200"
                                         >
-                                            Remove
+                                            <Check className="w-5 h-5" />
+                                            Accept Request
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setShowDetailModal(false);
+                                                openRejectModal(selectedRequest);
+                                            }}
+                                            disabled={loading}
+                                            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200"
+                                        >
+                                            <X className="w-5 h-5" />
+                                            Reject Request
                                         </button>
                                     </div>
                                 )}
-
-                                {errors.mediaFile && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.mediaFile}</p>
-                                )}
                             </div>
-                        </div>
-
-                        {/* Submit Button */}
-                        <div className="flex justify-end pt-6 border-t border-gray-200">
-                            <button
-                                type="submit"
-                                disabled={isSubmitting}
-                                className={`px-8 py-3 rounded-lg font-semibold transition-colors ${isSubmitting
-                                    ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
-                                    : 'bg-blue-600 hover:bg-blue-700 text-white'
-                                    }`}
-                            >
-                                {isSubmitting ? (
-                                    <div className="flex items-center">
-                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-700" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                        </svg>
-                                        Submitting...
-                                    </div>
-                                ) : (
-                                    'Submit Request'
-                                )}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            {/* Success Modal */}
-            {showSuccess && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-xl p-8 max-w-md w-full">
-                        <div className="text-center">
-                            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                                <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                            </div>
-                            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                Request Submitted Successfully!
-                            </h3>
-                            <p className="text-gray-600 mb-6">
-                                Your exercise request has been submitted for admin review.
-                                You'll be notified once it's approved and added to the library.
-                            </p>
-                            <button
-                                onClick={closeSuccessModal}
-                                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors"
-                            >
-                                Continue
-                            </button>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+
+                {/* Reject Modal */}
+                {showRejectModal && selectedRequest && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                        <div className="bg-slate-800 border border-white/20 rounded-2xl p-6 max-w-md w-full">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-xl font-bold text-white">Reject Request</h2>
+                                <button
+                                    onClick={() => setShowRejectModal(false)}
+                                    className="p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
+                                >
+                                    <X className="w-5 h-5 text-slate-400" />
+                                </button>
+                            </div>
+
+                            <p className="text-slate-300 mb-4">
+                                Are you sure you want to reject the request from {selectedRequest.trainee.name}?
+                            </p>
+
+                            <div className="mb-6">
+                                <label className="block text-sm font-medium text-white mb-2">
+                                    Reason for rejection (optional)
+                                </label>
+                                <textarea
+                                    value={rejectReason}
+                                    onChange={(e) => setRejectReason(e.target.value)}
+                                    placeholder="Provide a reason for rejection..."
+                                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none"
+                                    rows="3"
+                                />
+                            </div>
+
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setShowRejectModal(false)}
+                                    className="flex-1 px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors duration-200"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => handleRejectRequest(selectedRequest.id)}
+                                    disabled={loading}
+                                    className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200"
+                                >
+                                    {loading ? 'Rejecting...' : 'Reject'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Loading Overlay */}
+                {loading && (
+                    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-40">
+                        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+                            <div className="flex items-center gap-3">
+                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                                <span className="text-white">Processing request...</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out forwards;
+        }
+        
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      `}</style>
         </div>
     );
 };
 
-export default RequestNewExercise;
+export default ManageRequests;

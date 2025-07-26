@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+//import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 // Layout
@@ -6,6 +6,7 @@ import Navbar from "./components/layout/DashboardNavbar";
 import CoachNavbar from "./components/layout/CoachNavbar";
 import TraineeNavbar from "./components/layout/TraineeNavbar";
 import Footer from "./components/layout/Footer";
+
 
 // Pages
 import Landing from "./pages/Landing";
@@ -40,7 +41,6 @@ import CoachProfile from "./pages/coach/CoachProfile";
 import CreatePost from "./pages/coach/CreatePost";
 import ManageRequests from "./pages/coach/ManageRequests";
 import RequestNewExercise from "./pages/coach/RequestNewExercise";
-import Requests from "./pages/coach/Requests";
 
 // Coach Plans
 import PlansOverview from "./pages/coach/plans/PlansOverview";
@@ -59,6 +59,9 @@ import SellerInfoSetup from './pages/store/SellerInfoSetup';
 // Community
 import CommunityFeed from "./pages/community/CommunityFeed";
 
+//payment
+import Checkout from './pages/payment/Checkout';
+
 // Shared
 import Chat from "./pages/shared/Chat";
 import Notifications from './pages/shared/Notifications';
@@ -70,23 +73,25 @@ import ExerciseDetailModal from './pages/workouts/ExerciseDetailModal';
 const HIDE_NAVBAR_PATHS = [
   '/', '/register', '/login', '/verify-email',
   '/dashboard-selector', '/trainee/setup', '/coach/setup',
-  '/workout-library', '/seller/setup' // Added to hide the navbar on the Workout Library page
+  '/workout-library', '/seller/setup', "/trainee/profile", "/store/product/:id",
+  "/store/add-product", "/coach/plans/create", "/checkout", "/trainee/daily-plan", "/trainee/workout-done"// Added to hide the navbar on the Workout Library page
 ];
 
 const HIDE_FOOTER_PATHS = [
   '/', '/register', '/login', '/verify-email',
   '/dashboard-selector', '/trainee/setup', '/coach/setup', '/seller/setup', '/notifications',
-  "/chat", "/trainee/profile",
+  "/chat", "/trainee/profile", "/coach/request-new-exercise", "/store/dashboard", "/store/add-product", "/coach/plans/create",
+  "/store/product/:id", "/checkout", "/trainee/daily-plan", "/trainee/workout-done"
 ];
 
 export default function App() {
   const location = useLocation();
-  const [user, setUser] = useState(null);
+  //*const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) setUser(storedUser);
-  }, []);
+  /*  useEffect(() => {
+     const storedUser = JSON.parse(localStorage.getItem("user"));
+     if (storedUser) setUser(storedUser);
+   }, []);*/
 
   const shouldHideNavbar = HIDE_NAVBAR_PATHS.includes(location.pathname);
   const shouldHideFooter = HIDE_FOOTER_PATHS.includes(location.pathname);
@@ -113,6 +118,7 @@ export default function App() {
           <Route path="/verify-email" element={<EmailVerification />} />
           <Route path="/dashboard-selector" element={<DashboardSelector />} />
 
+
           {/* Trainee */}
           <Route path="/trainee/setup" element={<TraineeInfoSetup />} />
           <Route path="/trainee" element={<TraineeEntryPoint />} />
@@ -137,7 +143,6 @@ export default function App() {
           <Route path="/coach/create-post" element={<CreatePost />} />
           <Route path="/coach/manage-requests" element={<ManageRequests />} />
           <Route path="/coach/request-new-exercise" element={<RequestNewExercise />} />
-          <Route path="/coach/requests" element={<Requests />} />
           <Route path="/coach/plans" element={<PlansOverview />} />
           <Route path="/coach/plans/create" element={<CreatePlan />} />
           <Route path="/coach/plans/day/:id" element={<PlanDayView />} />
@@ -157,6 +162,9 @@ export default function App() {
           {/* Workouts */}
           <Route path="/workout-library" element={<WorkoutLibrary />} />
           <Route path="/exercise-detail" element={<ExerciseDetailModal />} />
+
+          {/*payment*/}
+          <Route path="/checkout" element={<Checkout />} />
 
           {/* Shared */}
           <Route path="/chat" element={<Chat />} />

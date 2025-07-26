@@ -2,9 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // ✅ الإضافة: لتفعيل التوجيه
 import { ChevronLeft, User, DollarSign, Send, CheckCircle, AlertCircle } from 'lucide-react';
-import TraineeNavbar from '../../components/layout/TraineeNavbar';
 
-const PrivateTrainingRequest = ({ coach, onRequestSent }) => {
+const PrivateTrainingRequest = ({ coach }) => {
     const [message, setMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -45,7 +44,7 @@ const PrivateTrainingRequest = ({ coach, onRequestSent }) => {
 
     return (
         <>
-            <TraineeNavbar />
+
 
             <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4 sm:p-6 lg:p-8">
                 <div className="max-w-4xl mx-auto">

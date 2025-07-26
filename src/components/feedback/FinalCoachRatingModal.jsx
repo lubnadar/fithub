@@ -134,8 +134,8 @@ const FinalCoachRatingModal = ({
                                                     key={star}
                                                     type="button"
                                                     className={`p-2 rounded-full transition-all duration-200 transform hover:scale-125 ${(hoveredRating || rating) >= star
-                                                            ? 'text-yellow-400 drop-shadow-lg'
-                                                            : 'text-gray-300 dark:text-gray-600 hover:text-yellow-300'
+                                                        ? 'text-yellow-400 drop-shadow-lg'
+                                                        : 'text-gray-300 dark:text-gray-600 hover:text-yellow-300'
                                                         }`}
                                                     onMouseEnter={() => setHoveredRating(star)}
                                                     onMouseLeave={() => setHoveredRating(0)}
@@ -180,8 +180,8 @@ const FinalCoachRatingModal = ({
                                         type="submit"
                                         disabled={rating === 0 || isSubmitting}
                                         className={`w-full py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 transform ${rating === 0
-                                                ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
-                                                : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl'
+                                            ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
+                                            : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl'
                                             }`}
                                     >
                                         {isSubmitting ? (

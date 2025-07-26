@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Star, ShoppingCart, User, Calendar, Edit, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 
 const ProductDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     console.log("Product ID from URL:", id);
 
     // باقي الكود مثل useState للمنتج والمراجعات...
@@ -90,6 +91,16 @@ const ProductDetail = () => {
             setReviews([review, ...reviews]);
             setNewReview({ rating: 5, comment: "" });
         }
+    };
+
+    const handleProceedToCheckout = () => {
+        setShowCheckoutModal(false);
+        navigate('/checkout', {
+            state: {
+                product: product,
+                quantity: 1
+            }
+        });
     };
 
     const renderStars = (rating, interactive = false, onRatingChange = null) => {
@@ -302,10 +313,7 @@ const ProductDetail = () => {
                                 Cancel
                             </button>
                             <button
-                                onClick={() => {
-                                    setShowCheckoutModal(false);
-                                    alert('Checkout feature coming soon!');
-                                }}
+                                onClick={handleProceedToCheckout}
                                 className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-600 hover:from-emerald-600 hover:to-blue-700 text-white py-3 px-6 rounded-lg transition-all"
                             >
                                 Proceed

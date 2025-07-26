@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User, Upload, X, Save, Trash2, Eye, EyeOff, MapPin, Activity, Target, TrendingUp } from 'lucide-react';
 import TraineeNavbar from '../../components/layout/TraineeNavbar';
+
 const Profile = () => {
     const [profileData, setProfileData] = useState({
         avatar: null,
@@ -51,11 +52,8 @@ const Profile = () => {
     };
 
     const handleSave = () => {
-        // Simulate saving
         console.log('Saving profile data:', profileData);
         setHasChanges(false);
-
-        // Show success feedback
         const button = document.querySelector('.save-button');
         button.textContent = 'Saved!';
         button.classList.add('bg-emerald-600');
@@ -68,7 +66,6 @@ const Profile = () => {
     const handleDeleteAccount = () => {
         console.log('Account deleted');
         setShowDeleteModal(false);
-        // In a real app, this would redirect to login or home
     };
 
     const genderOptions = [
@@ -90,28 +87,25 @@ const Profile = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 font-inter">
-            {/* Header */}
-            <div className="bg-white shadow-sm border-b border-slate-200">
+        <div className="min-h-screen bg-slate-800 font-inter">
+            <div className="bg-slate-700 shadow-sm border-b border-slate-600">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                    <h1 className="text-2xl font-bold text-slate-800">Profile Settings</h1>
-                    <p className="text-slate-600 mt-1">Manage your account and health information</p>
+                    <h1 className="text-2xl font-bold text-slate-100">Profile Settings</h1>
+                    <p className="text-slate-300 mt-1">Manage your account and health information</p>
                 </div>
             </div>
 
-            {/* Main Content */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-                    {/* Left Column - Profile Info */}
+                    {/* Left Column */}
                     <div className="space-y-6">
-                        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
-                            <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center gap-2">
+                        {/* Profile Information Card */}
+                        <div className="bg-slate-700 rounded-2xl p-6 shadow-lg border border-slate-600">
+                            <h2 className="text-xl font-semibold text-slate-100 mb-6 flex items-center gap-2">
                                 <User className="w-5 h-5 text-emerald-500" />
                                 Profile Information
                             </h2>
 
-                            {/* Avatar Section */}
                             <div className="text-center mb-6">
                                 <div className="relative inline-block">
                                     <div className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 flex items-center justify-center text-white text-2xl font-bold overflow-hidden hover:scale-105 transition-transform duration-200">
@@ -122,6 +116,7 @@ const Profile = () => {
                                         )}
                                     </div>
                                 </div>
+
                                 <div className="mt-4 flex flex-col sm:flex-row gap-2 justify-center">
                                     <label className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-colors duration-200">
                                         <Upload className="w-4 h-4" />
@@ -136,7 +131,7 @@ const Profile = () => {
                                     {profileData.avatar && (
                                         <button
                                             onClick={handleRemoveAvatar}
-                                            className="inline-flex items-center gap-2 bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+                                            className="inline-flex items-center gap-2 bg-slate-600 hover:bg-slate-500 text-white px-4 py-2 rounded-lg transition-colors duration-200"
                                         >
                                             <X className="w-4 h-4" />
                                             Remove Image
@@ -145,22 +140,21 @@ const Profile = () => {
                                 </div>
                             </div>
 
-                            {/* Basic Info */}
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-slate-300 mb-2">
                                         Full Name
                                     </label>
                                     <input
                                         type="text"
                                         value={profileData.fullName}
                                         onChange={(e) => handleInputChange('fullName', e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                        className="w-full px-3 py-2 border border-slate-600 bg-slate-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-slate-300 mb-2">
                                         Email Address
                                     </label>
                                     <div className="flex items-center gap-2">
@@ -168,11 +162,11 @@ const Profile = () => {
                                             type="email"
                                             value={profileData.email}
                                             onChange={(e) => handleInputChange('email', e.target.value)}
-                                            className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                            className="flex-1 px-3 py-2 border border-slate-600 bg-slate-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                         />
                                         <button
                                             onClick={() => handleInputChange('showEmailPublic', !profileData.showEmailPublic)}
-                                            className="flex items-center gap-2 text-sm text-slate-600 hover:text-slate-800 transition-colors"
+                                            className="flex items-center gap-2 text-sm text-slate-300 hover:text-slate-100 transition-colors"
                                         >
                                             {profileData.showEmailPublic ? (
                                                 <><Eye className="w-4 h-4" /> Public</>
@@ -186,12 +180,11 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* Right Column - Editable Sections */}
+                    {/* Right Column */}
                     <div className="space-y-6">
-
-                        {/* Personal Info Section */}
-                        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
-                            <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                        {/* Personal Information Card */}
+                        <div className="bg-slate-700 rounded-2xl p-6 shadow-lg border border-slate-600">
+                            <h3 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
                                 <MapPin className="w-5 h-5 text-blue-500" />
                                 Personal Information
                             </h3>
@@ -199,40 +192,40 @@ const Profile = () => {
                             <div className="space-y-4">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                                        <label className="block text-sm font-medium text-slate-300 mb-2">
                                             Country
                                         </label>
                                         <input
                                             type="text"
                                             value={profileData.country}
                                             onChange={(e) => handleInputChange('country', e.target.value)}
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                            className="w-full px-3 py-2 border border-slate-600 bg-slate-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                                        <label className="block text-sm font-medium text-slate-300 mb-2">
                                             City
                                         </label>
                                         <input
                                             type="text"
                                             value={profileData.city}
                                             onChange={(e) => handleInputChange('city', e.target.value)}
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                            className="w-full px-3 py-2 border border-slate-600 bg-slate-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-slate-300 mb-2">
                                         Gender
                                     </label>
                                     <select
                                         value={profileData.gender}
                                         onChange={(e) => handleInputChange('gender', e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                        className="w-full px-3 py-2 border border-slate-600 bg-slate-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                     >
                                         {genderOptions.map(option => (
-                                            <option key={option.value} value={option.value}>
+                                            <option key={option.value} value={option.value} className="bg-slate-700">
                                                 {option.label}
                                             </option>
                                         ))}
@@ -241,9 +234,9 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        {/* Health Info Section */}
-                        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
-                            <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                        {/* Health Information Card */}
+                        <div className="bg-slate-700 rounded-2xl p-6 shadow-lg border border-slate-600">
+                            <h3 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
                                 <Activity className="w-5 h-5 text-emerald-500" />
                                 Health Information
                             </h3>
@@ -251,41 +244,41 @@ const Profile = () => {
                             <div className="space-y-4">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                                        <label className="block text-sm font-medium text-slate-300 mb-2">
                                             Height (cm)
                                         </label>
                                         <input
                                             type="number"
                                             value={profileData.height}
                                             onChange={(e) => handleInputChange('height', e.target.value)}
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                            className="w-full px-3 py-2 border border-slate-600 bg-slate-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                                        <label className="block text-sm font-medium text-slate-300 mb-2">
                                             Weight (kg)
                                         </label>
                                         <input
                                             type="number"
                                             value={profileData.weight}
                                             onChange={(e) => handleInputChange('weight', e.target.value)}
-                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                            className="w-full px-3 py-2 border border-slate-600 bg-slate-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                                    <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
                                         <Target className="w-4 h-4" />
                                         Fitness Goal
                                     </label>
                                     <select
                                         value={profileData.fitnessGoal}
                                         onChange={(e) => handleInputChange('fitnessGoal', e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                        className="w-full px-3 py-2 border border-slate-600 bg-slate-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                     >
                                         {fitnessGoalOptions.map(option => (
-                                            <option key={option.value} value={option.value}>
+                                            <option key={option.value} value={option.value} className="bg-slate-700">
                                                 {option.label}
                                             </option>
                                         ))}
@@ -293,17 +286,17 @@ const Profile = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                                    <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
                                         <TrendingUp className="w-4 h-4" />
                                         Activity Level
                                     </label>
                                     <select
                                         value={profileData.activityLevel}
                                         onChange={(e) => handleInputChange('activityLevel', e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                        className="w-full px-3 py-2 border border-slate-600 bg-slate-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                                     >
                                         {activityLevelOptions.map(option => (
-                                            <option key={option.value} value={option.value}>
+                                            <option key={option.value} value={option.value} className="bg-slate-700">
                                                 {option.label}
                                             </option>
                                         ))}
@@ -314,8 +307,8 @@ const Profile = () => {
                     </div>
                 </div>
 
-                {/* Bottom Actions */}
-                <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+                {/* Action Buttons */}
+                <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-700 rounded-2xl p-6 shadow-lg border border-slate-600">
                     <div className="flex flex-col sm:flex-row gap-4 order-2 sm:order-1">
                         <button
                             onClick={() => setShowDeleteModal(true)}
@@ -331,7 +324,7 @@ const Profile = () => {
                         disabled={!hasChanges}
                         className={`save-button flex items-center gap-2 px-8 py-3 rounded-lg font-medium transition-all duration-200 order-1 sm:order-2 ${hasChanges
                             ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
-                            : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                            : 'bg-slate-600 text-slate-400 cursor-not-allowed'
                             }`}
                     >
                         <Save className="w-4 h-4" />
@@ -340,24 +333,24 @@ const Profile = () => {
                 </div>
             </div>
 
-            {/* Delete Confirmation Modal */}
+            {/* Delete Account Modal */}
             {showDeleteModal && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+                    <div className="bg-slate-700 rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl border border-slate-600">
                         <div className="text-center">
                             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <Trash2 className="w-8 h-8 text-red-500" />
                             </div>
-                            <h3 className="text-xl font-semibold text-slate-800 mb-2">
+                            <h3 className="text-xl font-semibold text-slate-100 mb-2">
                                 Delete Account
                             </h3>
-                            <p className="text-slate-600 mb-6">
+                            <p className="text-slate-300 mb-6">
                                 Are you sure you want to delete your account? This action cannot be undone and you will lose all your data.
                             </p>
                             <div className="flex gap-3">
                                 <button
                                     onClick={() => setShowDeleteModal(false)}
-                                    className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg transition-colors"
+                                    className="flex-1 bg-slate-600 hover:bg-slate-500 text-white px-4 py-2 rounded-lg transition-colors"
                                 >
                                     Cancel
                                 </button>

@@ -1,6 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Camera, X, Share2, SkipForward, Settings, Activity, CheckCircle } from 'lucide-react';
 
+const aiTips = [
+    "Keep your core engaged throughout the movement",
+    "Maintain neutral spine alignment",
+    "Control the movement, don't rush",
+    "Focus on proper breathing technique",
+    "Keep your shoulders back and down"
+];
+
+const mockPostureIssues = [
+    { joint: 'shoulder', x: 45, y: 25, issue: 'Shoulder too forward' },
+    { joint: 'knee', x: 35, y: 75, issue: 'Knee alignment off' }
+];
+
 const AIWorkoutTracker = () => {
     const videoRef = useRef(null);
     const [isStreaming, setIsStreaming] = useState(false);
@@ -12,19 +25,6 @@ const AIWorkoutTracker = () => {
         showOverlay: false,
         issues: []
     });
-
-    const aiTips = [
-        "Keep your core engaged throughout the movement",
-        "Maintain neutral spine alignment",
-        "Control the movement, don't rush",
-        "Focus on proper breathing technique",
-        "Keep your shoulders back and down"
-    ];
-
-    const mockPostureIssues = [
-        { joint: 'shoulder', x: 45, y: 25, issue: 'Shoulder too forward' },
-        { joint: 'knee', x: 35, y: 75, issue: 'Knee alignment off' }
-    ];
 
     const startCamera = async () => {
         try {

@@ -37,7 +37,6 @@ export default function Register() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({});
-    const [isVisible, setIsVisible] = useState(true);
 
     const validateForm = () => {
         const newErrors = {};
@@ -56,7 +55,7 @@ export default function Register() {
 
         if (!formData.phoneNumber.trim()) {
             newErrors.phoneNumber = "Phone number is required";
-        } else if (!/^\+?[\d\s\-\(\)]{8,}$/.test(formData.phoneNumber)) {
+        } else if (!/^\+?[\d\s\-()]{8,}$/.test(formData.phoneNumber)) {
             newErrors.phoneNumber = "Please enter a valid phone number";
         }
 

@@ -69,6 +69,7 @@ export default function TraineeInfoSetup() {
             // ✅ التوجيه إلى DefaultTraineeDashboard
             navigate('/trainee/default-dashboard');
         } catch (error) {
+            console.error('Setup error:', error);
             setErrors({ submit: 'Failed to complete setup. Please try again.' });
         } finally {
             setIsSubmitting(false);

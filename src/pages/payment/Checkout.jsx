@@ -1,16 +1,36 @@
 import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    // Mock data for coach subscription
-    const mockCoach = {
-        name: "Sarah Johnson",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-        specialization: "Strength & Conditioning",
-        monthlyPrice: 149,
-        startDate: "2025-08-01",
-        endDate: "2025-09-01"
+    // Get product data from navigation state or use default
+    const { product, quantity = 1 } = location.state || {};
+
+    // If no product data, redirect back or use mock data
+    React.useEffect(() => {
+        if (!product) {
+            console.log('No product data found, using mock data');
+        }
+    }, [product]);
+
+    // Mock product data as fallback
+    const mockProduct = {
+        id: 1,
+        name: "Premium Whey Protein Isolate",
+        price: 49.99,
+        originalPrice: 59.99,
+        images: ["https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=600&h=600&fit=crop"],
+        seller: {
+            name: "FitPro Nutrition",
+            logo: "🏋️"
+        }
     };
+
+    // Use actual product data or fallback to mock data
+    const currentProduct = product || mockProduct;
+    const currentQuantity = quantity || 1;
 
     const [formData, setFormData] = useState({
         cardholderName: '',
@@ -154,7 +174,7 @@ const Checkout = () => {
 
             // Redirect after success animation
             setTimeout(() => {
-                window.location.href = '/trainee/dashboard';
+                navigate('/');
             }, 2000);
         }, 2000);
     };
@@ -169,9 +189,10 @@ const Checkout = () => {
         { code: 'NL', name: 'Netherlands' }
     ];
 
-    const subtotal = mockCoach.monthlyPrice;
-    const tax = Math.round(subtotal * 0.08);
-    const total = subtotal + tax;
+    const subtotal = currentProduct.price * currentQuantity;
+    const shipping = 0; // Free shipping
+    const tax = Math.round(subtotal * 0.08 * 100) / 100;
+    const total = subtotal + shipping + tax;
 
     const CardIcon = ({ type }) => {
         const icons = {
@@ -194,38 +215,38 @@ const Checkout = () => {
 
     if (showSuccess) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-500 to-emerald-400 flex items-center justify-center p-4">
-                <div className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-2xl p-8 text-center text-white max-w-md mx-auto">
-                    <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+                <div className="bg-slate-800/50 backdrop-blur-lg border border-slate-700/50 rounded-2xl p-8 text-center text-white max-w-md mx-auto">
+                    <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
                         <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
                     <h2 className="text-2xl font-bold mb-2">Payment Successful!</h2>
-                    <p className="text-white/80 mb-4">Your subscription has been activated. Redirecting to dashboard...</p>
-                    <div className="animate-spin w-6 h-6 border-2 border-white/30 border-t-white rounded-full mx-auto"></div>
+                    <p className="text-slate-300 mb-4">Your order has been confirmed. Redirecting to home...</p>
+                    <div className="animate-spin w-6 h-6 border-2 border-slate-600 border-t-emerald-400 rounded-full mx-auto"></div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-500 to-emerald-400 p-4">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-8 pt-8">
-                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Complete Your Subscription</h1>
-                    <p className="text-white/80">Secure checkout powered by industry-standard encryption</p>
+                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Complete Your Order</h1>
+                    <p className="text-slate-300">Secure checkout powered by industry-standard encryption</p>
                 </div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Payment Form */}
                     <div className="lg:col-span-2">
-                        <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8">
+                        <div className="bg-slate-800/30 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 border border-slate-700/50">
                             <div className="space-y-6">
                                 {/* Cardholder Name */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-slate-300 mb-2">
                                         Cardholder Name
                                     </label>
                                     <input
@@ -233,18 +254,18 @@ const Checkout = () => {
                                         name="cardholderName"
                                         value={formData.cardholderName}
                                         onChange={handleInputChange}
-                                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.cardholderName ? 'border-red-500 error-shake' : 'border-gray-300'
+                                        className={`w-full px-4 py-3 bg-slate-700/50 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-slate-400 ${errors.cardholderName ? 'border-red-500 error-shake' : 'border-slate-600'
                                             }`}
                                         placeholder="John Doe"
                                     />
                                     {errors.cardholderName && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.cardholderName}</p>
+                                        <p className="text-red-400 text-sm mt-1">{errors.cardholderName}</p>
                                     )}
                                 </div>
 
                                 {/* Card Number */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-slate-300 mb-2">
                                         Card Number
                                     </label>
                                     <div className="relative">
@@ -254,7 +275,7 @@ const Checkout = () => {
                                             value={formData.cardNumber}
                                             onChange={handleInputChange}
                                             maxLength="19"
-                                            className={`w-full px-4 py-3 pr-16 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.cardNumber ? 'border-red-500 error-shake' : 'border-gray-300'
+                                            className={`w-full px-4 py-3 pr-16 bg-slate-700/50 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-slate-400 ${errors.cardNumber ? 'border-red-500 error-shake' : 'border-slate-600'
                                                 }`}
                                             placeholder="1234 5678 9012 3456"
                                         />
@@ -263,14 +284,14 @@ const Checkout = () => {
                                         </div>
                                     </div>
                                     {errors.cardNumber && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.cardNumber}</p>
+                                        <p className="text-red-400 text-sm mt-1">{errors.cardNumber}</p>
                                     )}
                                 </div>
 
                                 {/* Expiry and CVC */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-slate-300 mb-2">
                                             Expiry Date
                                         </label>
                                         <input
@@ -279,16 +300,16 @@ const Checkout = () => {
                                             value={formData.expiryDate}
                                             onChange={handleInputChange}
                                             maxLength="5"
-                                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.expiryDate ? 'border-red-500 error-shake' : 'border-gray-300'
+                                            className={`w-full px-4 py-3 bg-slate-700/50 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-slate-400 ${errors.expiryDate ? 'border-red-500 error-shake' : 'border-slate-600'
                                                 }`}
                                             placeholder="MM/YY"
                                         />
                                         {errors.expiryDate && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.expiryDate}</p>
+                                            <p className="text-red-400 text-sm mt-1">{errors.expiryDate}</p>
                                         )}
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-slate-300 mb-2">
                                             CVC
                                         </label>
                                         <input
@@ -297,22 +318,22 @@ const Checkout = () => {
                                             value={formData.cvc}
                                             onChange={handleInputChange}
                                             maxLength="4"
-                                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.cvc ? 'border-red-500 error-shake' : 'border-gray-300'
+                                            className={`w-full px-4 py-3 bg-slate-700/50 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-slate-400 ${errors.cvc ? 'border-red-500 error-shake' : 'border-slate-600'
                                                 }`}
                                             placeholder="123"
                                         />
                                         {errors.cvc && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.cvc}</p>
+                                            <p className="text-red-400 text-sm mt-1">{errors.cvc}</p>
                                         )}
                                     </div>
                                 </div>
 
                                 {/* Billing Address */}
                                 <div className="space-y-4">
-                                    <h3 className="text-lg font-semibold text-gray-800">Billing Address</h3>
+                                    <h3 className="text-lg font-semibold text-white">Billing Address</h3>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-slate-300 mb-2">
                                             Address
                                         </label>
                                         <input
@@ -320,18 +341,18 @@ const Checkout = () => {
                                             name="address"
                                             value={formData.address}
                                             onChange={handleInputChange}
-                                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.address ? 'border-red-500 error-shake' : 'border-gray-300'
+                                            className={`w-full px-4 py-3 bg-slate-700/50 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-slate-400 ${errors.address ? 'border-red-500 error-shake' : 'border-slate-600'
                                                 }`}
                                             placeholder="123 Main Street"
                                         />
                                         {errors.address && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                                            <p className="text-red-400 text-sm mt-1">{errors.address}</p>
                                         )}
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            <label className="block text-sm font-medium text-slate-300 mb-2">
                                                 City
                                             </label>
                                             <input
@@ -339,16 +360,16 @@ const Checkout = () => {
                                                 name="city"
                                                 value={formData.city}
                                                 onChange={handleInputChange}
-                                                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.city ? 'border-red-500 error-shake' : 'border-gray-300'
+                                                className={`w-full px-4 py-3 bg-slate-700/50 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-slate-400 ${errors.city ? 'border-red-500 error-shake' : 'border-slate-600'
                                                     }`}
                                                 placeholder="New York"
                                             />
                                             {errors.city && (
-                                                <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+                                                <p className="text-red-400 text-sm mt-1">{errors.city}</p>
                                             )}
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            <label className="block text-sm font-medium text-slate-300 mb-2">
                                                 ZIP Code
                                             </label>
                                             <input
@@ -356,28 +377,28 @@ const Checkout = () => {
                                                 name="zipCode"
                                                 value={formData.zipCode}
                                                 onChange={handleInputChange}
-                                                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.zipCode ? 'border-red-500 error-shake' : 'border-gray-300'
+                                                className={`w-full px-4 py-3 bg-slate-700/50 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-slate-400 ${errors.zipCode ? 'border-red-500 error-shake' : 'border-slate-600'
                                                     }`}
                                                 placeholder="10001"
                                             />
                                             {errors.zipCode && (
-                                                <p className="text-red-500 text-sm mt-1">{errors.zipCode}</p>
+                                                <p className="text-red-400 text-sm mt-1">{errors.zipCode}</p>
                                             )}
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-slate-300 mb-2">
                                             Country
                                         </label>
                                         <select
                                             name="country"
                                             value={formData.country}
                                             onChange={handleInputChange}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white"
                                         >
                                             {countries.map(country => (
-                                                <option key={country.code} value={country.code}>
+                                                <option key={country.code} value={country.code} className="bg-slate-700">
                                                     {country.name}
                                                 </option>
                                             ))}
@@ -386,8 +407,8 @@ const Checkout = () => {
                                 </div>
 
                                 {/* Security Notice */}
-                                <div className="flex items-center space-x-2 text-sm text-gray-600 bg-green-50 p-3 rounded-lg">
-                                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="flex items-center space-x-2 text-sm text-slate-300 bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-lg">
+                                    <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                     <span>All payments are securely encrypted with 256-bit SSL</span>
@@ -396,55 +417,46 @@ const Checkout = () => {
                         </div>
                     </div>
 
-                    {/* Coach Summary & Payment Summary */}
+                    {/* Product Summary & Payment Summary */}
                     <div className="space-y-6">
-                        {/* Coach Summary */}
-                        <div className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-2xl p-6 text-white">
-                            <h3 className="text-lg font-semibold mb-4">Your Coach</h3>
+                        {/* Product Summary */}
+                        <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 text-white">
+                            <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
                             <div className="flex items-center space-x-4 mb-4">
                                 <img
-                                    src={mockCoach.avatar}
-                                    alt={mockCoach.name}
-                                    className="w-16 h-16 rounded-full object-cover border-2 border-white/50"
+                                    src={currentProduct.images[0]}
+                                    alt={currentProduct.name}
+                                    className="w-16 h-16 rounded-lg object-cover border border-slate-600"
                                 />
                                 <div>
-                                    <h4 className="font-semibold text-lg">{mockCoach.name}</h4>
-                                    <p className="text-white/80 text-sm">{mockCoach.specialization}</p>
-                                </div>
-                            </div>
-                            <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                    <span className="text-white/80">Monthly Rate:</span>
-                                    <span className="font-semibold">${mockCoach.monthlyPrice}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-white/80">Start Date:</span>
-                                    <span>{new Date(mockCoach.startDate).toLocaleDateString()}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-white/80">Next Billing:</span>
-                                    <span>{new Date(mockCoach.endDate).toLocaleDateString()}</span>
+                                    <h4 className="font-semibold text-sm">{currentProduct.name}</h4>
+                                    <p className="text-slate-400 text-xs">{currentProduct.seller.name}</p>
+                                    <p className="text-slate-400 text-xs">Quantity: {currentQuantity}</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Payment Summary */}
-                        <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-4">Payment Summary</h3>
+                        <div className="bg-slate-800/30 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-slate-700/50">
+                            <h3 className="text-lg font-semibold text-white mb-4">Payment Summary</h3>
 
                             <div className="space-y-3 text-sm">
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">Subtotal:</span>
-                                    <span className="font-medium">${subtotal}.00</span>
+                                    <span className="text-slate-400">Subtotal:</span>
+                                    <span className="font-medium text-white">${subtotal.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">Estimated Tax:</span>
-                                    <span className="font-medium">${tax}.00</span>
+                                    <span className="text-slate-400">Shipping:</span>
+                                    <span className="font-medium text-emerald-400">Free</span>
                                 </div>
-                                <hr className="border-gray-200" />
+                                <div className="flex justify-between">
+                                    <span className="text-slate-400">Estimated Tax:</span>
+                                    <span className="font-medium text-white">${tax.toFixed(2)}</span>
+                                </div>
+                                <hr className="border-slate-600" />
                                 <div className="flex justify-between text-lg font-bold">
-                                    <span>Total:</span>
-                                    <span>${total}.00</span>
+                                    <span className="text-white">Total:</span>
+                                    <span className="text-emerald-400">${total.toFixed(2)}</span>
                                 </div>
                             </div>
 
@@ -452,7 +464,7 @@ const Checkout = () => {
                                 type="submit"
                                 onClick={handleSubmit}
                                 disabled={isProcessing}
-                                className="w-full mt-6 bg-gradient-to-r from-blue-500 to-emerald-400 text-white font-semibold py-4 rounded-lg hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                                className="w-full mt-6 bg-gradient-to-r from-emerald-500 to-blue-600 hover:from-emerald-600 hover:to-blue-700 text-white font-semibold py-4 rounded-lg hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                             >
                                 {isProcessing ? (
                                     <div className="flex items-center justify-center space-x-2">
@@ -460,12 +472,12 @@ const Checkout = () => {
                                         <span>Processing...</span>
                                     </div>
                                 ) : (
-                                    `Pay $${total}.00`
+                                    `Pay $${total.toFixed(2)}`
                                 )}
                             </button>
 
-                            <div className="flex items-center justify-center space-x-2 mt-4 text-xs text-gray-500">
-                                <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="flex items-center justify-center space-x-2 mt-4 text-xs text-slate-400">
+                                <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <span>Secure Payment</span>

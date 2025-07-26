@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import TraineeNavbar from '../../components/layout/TraineeNavbar';
-import { useNavigate } from 'react-router-dom';  // إضافة useNavigate هنا
+import React, { useState } from 'react';
 import {
     Play,
     CheckCircle2,
@@ -63,9 +61,9 @@ const TraineeDashboard = () => {
         }
     ]);
 
-    const [currentDate, setCurrentDate] = useState(new Date());
-    const coachName = "Sarah Johnson"; // This would come from user context/API
-    const navigate = useNavigate();  // استخدام useNavigate
+    // استخدام التاريخ الحالي مباشرة بدون state
+    const currentDate = new Date();
+    const coachName = "Sarah Johnson";
 
     const completedCount = exercises.filter(ex => ex.completed).length;
     const totalCount = exercises.length;
@@ -78,13 +76,11 @@ const TraineeDashboard = () => {
     };
 
     const handleExerciseClick = (exerciseId) => {
-        // Navigate to exercise detail page
-        navigate(`/trainee/exercise-detail/${exerciseId}`);  // التنقل إلى صفحة التمرين
+        console.log(`Navigate to exercise detail: ${exerciseId}`);
     };
 
     const handleStartWithAI = () => {
-        // Navigate to AI workout tracker
-        navigate('/trainee/AIWorkoutTracker');  // التنقل إلى AI Tracker
+        console.log('Navigate to AI Workout Tracker');
     };
 
     const getDifficultyColor = (difficulty) => {
@@ -106,17 +102,17 @@ const TraineeDashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
             {/* Sticky Header */}
-            <div className="sticky top-0 z-10 backdrop-blur-md bg-white/5 border-b border-white/10">
+            <div className="sticky top-0 z-10 backdrop-blur-md bg-blue-900/20 border-b border-blue-400/20">
                 <div className="max-w-4xl mx-auto px-4 py-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
-                            <Calendar className="w-5 h-5 text-emerald-400" />
+                            <Calendar className="w-5 h-5 text-blue-400" />
                             <span className="text-white font-medium">{formatDate(currentDate)}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <User className="w-4 h-4 text-emerald-400" />
+                            <User className="w-4 h-4 text-blue-400" />
                             <span className="text-sm text-gray-300">Coach: {coachName}</span>
                         </div>
                     </div>
@@ -132,16 +128,16 @@ const TraineeDashboard = () => {
 
                 {/* Progress Overview */}
                 <div className="mb-8">
-                    <div className="backdrop-blur-md bg-white/10 rounded-2xl border border-white/20 p-6">
+                    <div className="backdrop-blur-md bg-blue-900/20 rounded-2xl border border-blue-400/20 p-6">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-xl font-semibold text-white">Today's Progress</h2>
                             <Trophy className="w-6 h-6 text-yellow-400" />
                         </div>
 
                         <div className="flex items-center space-x-4 mb-4">
-                            <div className="flex-1 bg-gray-700/50 rounded-full h-3">
+                            <div className="flex-1 bg-blue-800/50 rounded-full h-3">
                                 <div
-                                    className="bg-gradient-to-r from-emerald-400 to-cyan-400 h-3 rounded-full transition-all duration-500"
+                                    className="bg-gradient-to-r from-blue-400 to-indigo-400 h-3 rounded-full transition-all duration-500"
                                     style={{ width: `${(completedCount / totalCount) * 100}%` }}
                                 ></div>
                             </div>
@@ -149,7 +145,7 @@ const TraineeDashboard = () => {
                         </div>
 
                         {allCompleted ? (
-                            <div className="flex items-center space-x-2 text-emerald-400">
+                            <div className="flex items-center space-x-2 text-blue-400">
                                 <CheckCircle2 className="w-5 h-5" />
                                 <span className="font-medium">Well done! You've completed today's workout</span>
                             </div>
@@ -167,14 +163,14 @@ const TraineeDashboard = () => {
                     {exercises.map((exercise) => (
                         <div
                             key={exercise.id}
-                            className={`backdrop-blur-md bg-white/10 rounded-2xl border border-white/20 p-6 transition-all duration-300 hover:bg-white/15 hover:border-emerald-400/50 hover:shadow-lg hover:shadow-emerald-400/20 cursor-pointer ${exercise.completed ? 'ring-2 ring-emerald-400/30' : ''
+                            className={`backdrop-blur-md bg-blue-900/20 rounded-2xl border border-blue-400/20 p-6 transition-all duration-300 hover:bg-blue-900/30 hover:border-blue-400/50 hover:shadow-lg hover:shadow-blue-400/20 cursor-pointer ${exercise.completed ? 'ring-2 ring-blue-400/30' : ''
                                 }`}
-                            onClick={() => handleExerciseClick(exercise.id)}  // استخدام التنقل هنا
+                            onClick={() => handleExerciseClick(exercise.id)}
                         >
                             <div className="flex items-center justify-between">
                                 <div className="flex items-start space-x-4 flex-1">
                                     {/* Exercise Icon/Image */}
-                                    <div className="text-4xl bg-white/10 rounded-xl p-3 flex items-center justify-center">
+                                    <div className="text-4xl bg-blue-900/20 rounded-xl p-3 flex items-center justify-center">
                                         {exercise.image}
                                     </div>
 
@@ -206,8 +202,8 @@ const TraineeDashboard = () => {
                                                     toggleExerciseStatus(exercise.id);
                                                 }}
                                                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${exercise.completed
-                                                    ? 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30'
-                                                    : 'bg-gray-600/30 text-gray-300 hover:bg-gray-600/50'
+                                                    ? 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30'
+                                                    : 'bg-blue-800/30 text-gray-300 hover:bg-blue-800/50'
                                                     }`}
                                             >
                                                 {exercise.completed ? (
@@ -222,8 +218,8 @@ const TraineeDashboard = () => {
 
                                             {exercise.completed && (
                                                 <button
-                                                    onClick={handleStartWithAI}  // التنقل إلى AI هنا
-                                                    className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-cyan-400/20 text-cyan-400 hover:bg-cyan-400/30"
+                                                    onClick={handleStartWithAI}
+                                                    className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-indigo-400/20 text-indigo-400 hover:bg-indigo-400/30"
                                                 >
                                                     <Zap className="w-4 h-4" />
                                                     <span className="text-sm font-medium">Start with AI</span>
@@ -238,7 +234,7 @@ const TraineeDashboard = () => {
                 </div>
             </div>
 
-            <TraineeNavbar />
+
         </div>
     );
 };

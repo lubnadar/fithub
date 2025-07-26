@@ -52,14 +52,10 @@ export default function PlansOverview() {
 
     return (
         <div className="min-h-screen bg-slate-900 text-white">
-            {/* ✅ Coach Navbar */}
-            <CoachNavBar />
 
             <main className="flex-1">
                 {/* Header */}
-                <header className="bg-slate-800 border-b border-slate-700 px-6 py-4 flex items-center justify-between">
-                    <h2 className="text-2xl font-bold">Plans</h2>
-                </header>
+
 
                 <div className="p-6">
                     {/* Stats Grid */}

@@ -118,7 +118,7 @@ const PostFormModal = ({ isOpen, onClose }) => {
 const CommunityFeed = () => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [posts, setPosts] = useState(mockPosts);
+    const posts = mockPosts;
 
 
     return (

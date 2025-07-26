@@ -30,9 +30,9 @@ const WorkoutDone = () => {
         <div
             key={i}
             className={`absolute w-2 h-2 bg-gradient-to-r ${i % 4 === 0 ? 'from-purple-400 to-pink-400' :
-                    i % 4 === 1 ? 'from-blue-400 to-cyan-400' :
-                        i % 4 === 2 ? 'from-green-400 to-emerald-400' :
-                            'from-yellow-400 to-orange-400'
+                i % 4 === 1 ? 'from-blue-400 to-cyan-400' :
+                    i % 4 === 2 ? 'from-green-400 to-emerald-400' :
+                        'from-yellow-400 to-orange-400'
                 } rounded-full animate-bounce`}
             style={{
                 left: `${Math.random() * 100}%`,
