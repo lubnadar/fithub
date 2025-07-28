@@ -257,6 +257,11 @@ const SellerDashboard = () => {
         navigate('/store/add-product');
     };
 
+    // ✅ تعريف الدالة الجديدة للانتقال إلى صفحة الطلبات
+    const handleNavigateToMyOrders = () => {
+        navigate("/store/my-orders"); // ✅ التنقل الفعلي إلى المسار المعرف
+    };
+
     // Mock data
     const overviewData = [
         {
@@ -340,39 +345,48 @@ const SellerDashboard = () => {
                         <SalesChart />
                     </div>
                 </div>
-
                 {/* Bottom Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Recent Orders */}
-                    <div className="lg:col-span-2">
-                        <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-6 border border-white/20">
-                            <h2 className="text-2xl font-semibold text-white mb-6">Recent Orders</h2>
+                    {/* Recent Orders and Notifications */}
+                    <div className="lg:col-span-3 flex flex-col lg:flex-row gap-8">
+                        {/* Recent Orders */}
+                        <div className="flex-1 backdrop-blur-xl bg-white/10 rounded-2xl p-6 border border-white/20">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-2xl font-semibold text-white">Recent Orders</h2>
+                                <button
+                                    onClick={handleNavigateToMyOrders}
+                                    className="px-4 py-2 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-lg text-white font-medium hover:shadow-lg transition-all duration-300"
+                                >
+                                    All Orders
+                                </button>
+                            </div>
                             <div className="space-y-4">
                                 {orders.map((order) => (
                                     <OrderItem key={order.id} order={order} />
                                 ))}
                             </div>
                         </div>
-                    </div>
 
-                    {/* Notifications */}
-                    <div>
-                        <NotificationPanel />
+                        {/* Notifications (Recent Updates) */}
+                        <div className="w-full lg:w-[30%] max-w-sm backdrop-blur-xl bg-white/10 rounded-2xl p-6 border border-white/20">
+                            <h2 className="text-2xl font-semibold text-white mb-6">Recent Updates</h2>
+                            <NotificationPanel />
+                        </div>
                     </div>
                 </div>
-            </main>
-
+            </main >
             {/* Floating Add Button */}
-            <button
+            < button
                 onClick={handleNavigateToAddProduct}
                 className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full shadow-2xl hover:shadow-emerald-500/25 transition-all duration-300 hover:scale-110 flex items-center justify-center z-50"
             >
                 <Plus className="w-6 h-6 text-white" />
-            </button>
-
+            </button >
             <Footer />
-        </div>
+        </div >
     );
 };
 
+
 export default SellerDashboard;
+

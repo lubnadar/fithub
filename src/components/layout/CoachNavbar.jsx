@@ -64,7 +64,7 @@ export default function CoachNavbar() {
                     </Link>
 
 
-                    <Link to="/community" className="text-slate-300 hover:text-white transition-colors">
+                    <Link to="/coach/community" className="text-slate-300 hover:text-white transition-colors">
                         <div className="flex items-center space-x-2">
                             <Users size={20} />
                             <span>Community</span>

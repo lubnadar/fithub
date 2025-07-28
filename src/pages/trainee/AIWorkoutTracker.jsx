@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Camera, X, Share2, SkipForward, Settings, Activity, CheckCircle } from 'lucide-react';
 
 const aiTips = [
@@ -15,6 +16,8 @@ const mockPostureIssues = [
 ];
 
 const AIWorkoutTracker = () => {
+    const navigate = useNavigate();
+    const { id } = useParams();
     const videoRef = useRef(null);
     const [isStreaming, setIsStreaming] = useState(false);
     const [shareWithCoach, setShareWithCoach] = useState(true);
@@ -101,6 +104,11 @@ const AIWorkoutTracker = () => {
 
     const handleSkipAI = () => {
         stopCamera();
+        if (id) {
+            navigate(`/trainee/exercise/${id}`);
+        } else {
+            navigate(-1);
+        }
         console.log('Navigating back to Exercise Detail Page...');
     };
 

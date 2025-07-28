@@ -32,6 +32,9 @@ import AIWorkoutTracker from "./pages/trainee/AIWorkoutTracker";
 import WorkoutDone from "./pages/trainee/WorkoutDone";
 import TraineeEntryPoint from "./pages/trainee/TraineeEntryPoint";
 import YourDailyPlan from "./pages/trainee/YourDailyPlan";
+import TraineeCommunity from "./pages/trainee/TraineeCommunity"; // ✅ إضافة
+import DocumaintationExerciseDetail from './pages/trainee/Documaintation-ExerciseDetail';
+
 
 
 // Coach Pages
@@ -41,6 +44,7 @@ import CoachProfile from "./pages/coach/CoachProfile";
 import CreatePost from "./pages/coach/CreatePost";
 import ManageRequests from "./pages/coach/ManageRequests";
 import RequestNewExercise from "./pages/coach/RequestNewExercise";
+import CoachCommunity from "./pages/coach/CoachCommunity";
 
 // Coach Plans
 import PlansOverview from "./pages/coach/plans/PlansOverview";
@@ -54,10 +58,9 @@ import ProductDetail from "./pages/store/ProductDetail";
 import AddEditProduct from "./pages/store/AddEditProduct";
 import SellerDashboard from './pages/store/SellerDashboard';
 import SellerInfoSetup from './pages/store/SellerInfoSetup';
+import MyOrders from "./pages/store/MyOrders";
 
 
-// Community
-import CommunityFeed from "./pages/community/CommunityFeed";
 
 //payment
 import Checkout from './pages/payment/Checkout';
@@ -74,14 +77,16 @@ const HIDE_NAVBAR_PATHS = [
   '/', '/register', '/login', '/verify-email',
   '/dashboard-selector', '/trainee/setup', '/coach/setup',
   '/workout-library', '/seller/setup', "/trainee/profile", "/store/product/:id",
-  "/store/add-product", "/coach/plans/create", "/checkout", "/trainee/daily-plan", "/trainee/workout-done"// Added to hide the navbar on the Workout Library page
+  "/store/add-product", "/coach/plans/create", "/checkout", "/trainee/daily-plan", "/trainee/workout-done", "/store/my-orders"
+  , "/trainee/ai-tracker"
 ];
 
 const HIDE_FOOTER_PATHS = [
   '/', '/register', '/login', '/verify-email',
   '/dashboard-selector', '/trainee/setup', '/coach/setup', '/seller/setup', '/notifications',
   "/chat", "/trainee/profile", "/coach/request-new-exercise", "/store/dashboard", "/store/add-product", "/coach/plans/create",
-  "/store/product/:id", "/checkout", "/trainee/daily-plan", "/trainee/workout-done"
+  "/store/product/:id", "/checkout", "/trainee/daily-plan", "/trainee/workout-done", "/store/my-orders", "/trainee/exercise/:id",
+  "/trainee/ai-tracker"
 ];
 
 export default function App() {
@@ -134,6 +139,12 @@ export default function App() {
           <Route path="/trainee/daily-plan" element={<YourDailyPlan />} />
           <Route path="/trainee/exercise/:id" element={<ExerciseDetail />} />
           <Route path="/trainee/default-dashboard" element={<DefaultTraineeDashboard />} />
+          <Route path="/trainee/community" element={<TraineeCommunity />} />
+          <Route path="/trainee/exercise-detail" element={<DocumaintationExerciseDetail />} />
+          <Route path="/trainee/my-orders" element={<MyOrders />} />
+
+
+
 
 
           {/* Coach */}
@@ -147,6 +158,7 @@ export default function App() {
           <Route path="/coach/plans/create" element={<CreatePlan />} />
           <Route path="/coach/plans/day/:id" element={<PlanDayView />} />
           <Route path="/coach/requests-history" element={<RequestHistoryCoach />} />
+          <Route path="/coach/community" element={<CoachCommunity />} />
 
           {/* Store */}
           <Route path="/store" element={<StoreHome />} />
@@ -154,10 +166,8 @@ export default function App() {
           <Route path="/store/add-product" element={<AddEditProduct />} />
           <Route path="/store/dashboard" element={<SellerDashboard />} />
           <Route path="/seller/setup" element={<SellerInfoSetup />} />
+          <Route path="/store/my-orders" element={<MyOrders />} />
 
-
-          {/* Community */}
-          <Route path="/community" element={<CommunityFeed />} />
 
           {/* Workouts */}
           <Route path="/workout-library" element={<WorkoutLibrary />} />

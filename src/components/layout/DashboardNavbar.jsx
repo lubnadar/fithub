@@ -35,8 +35,12 @@ export default function DashboardNavbar({ onMenuClick }) {
         navigate('/login');
     };
 
+    const handleNotificationsClick = () => {
+        navigate('/notifications');
+    };
+
     return (
-        <header className="bg-slate-800/90 backdrop-blur-sm border-b border-slate-700 px-6 py-4">
+        <header className="bg-slate-900 border-b border-slate-800 px-6 py-4"> {/* ✅ تغيير اللون إلى أسود داكن */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                     <button
@@ -54,11 +58,6 @@ export default function DashboardNavbar({ onMenuClick }) {
                 </div>
 
                 <div className="flex items-center space-x-6">
-                    {/* الإشعارات */}
-                    <button className="text-slate-400 hover:text-white relative">
-                        <Bell className="w-6 h-6" />
-                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-                    </button>
 
                     {/* Logout */}
                     <button
@@ -68,8 +67,18 @@ export default function DashboardNavbar({ onMenuClick }) {
                         <LogOut className="w-5 h-5" />
                         <span>Logout</span>
                     </button>
+
+                    {/* الإشعارات */}
+                    <button
+                        onClick={handleNotificationsClick}
+                        className="text-slate-400 hover:text-white relative"
+                    >
+                        <Bell className="w-6 h-6" />
+                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                    </button>
+
                 </div>
             </div>
         </header>
     );
-}  
+}

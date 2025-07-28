@@ -19,7 +19,6 @@ const SellerInfoSetup = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [touchedFields, setTouchedFields] = useState({});
 
-    // Mock seller data (would come from previous step)
     const sellerData = {
         name: 'John Smith',
         email: 'john.smith@example.com'
@@ -141,10 +140,7 @@ const SellerInfoSetup = () => {
             };
 
             localStorage.setItem('sellerProfile', JSON.stringify(sellerProfile));
-
-            // Redirect to SellerDashboard.jsx
-            navigate('/store/dashboard'); // التوجيه إلى صفحة الـ Dashboard مباشرة
-
+            navigate('/store/dashboard');
         } catch (error) {
             console.error('Error saving profile:', error);
         } finally {
@@ -153,9 +149,11 @@ const SellerInfoSetup = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-400/20 via-transparent to-transparent"></div>
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent"></div>
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+            <div className="absolute inset-0">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-400/20 via-transparent to-transparent opacity-70 scale-125"></div>
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent opacity-70 scale-125"></div>
+            </div>
 
             <div className="relative min-h-screen flex items-center justify-center p-4">
                 <div className="w-full max-w-2xl">
@@ -326,12 +324,12 @@ const SellerInfoSetup = () => {
                             </div>
 
                             <button
-                                type="button" // تغيير إلى "button" بدلاً من "submit"
-                                onClick={() => navigate('/store/dashboard')} // التوجيه إلى الـ Dashboard مباشرة
-                                className="w-full bg-gradient-to-r from-emerald-400 to-blue-500 text-white font-semibold py-4 rounded-xl hover:from-emerald-500 hover:to-blue-600 transition-all duration-200"
+                                type="submit"
+                                disabled={isLoading}
+                                className="w-full bg-gradient-to-r from-emerald-400 to-blue-500 text-white font-semibold py-4 rounded-xl hover:from-emerald-500 hover:to-blue-600 transition-all duration-200 flex items-center justify-center space-x-2"
                             >
-                                <span>Save and Continue</span>
-                                <ChevronRight className="w-5 h-5" />
+                                <span>{isLoading ? 'Saving...' : 'Save and Continue'}</span>
+                                {!isLoading && <ChevronRight className="w-5 h-5" />}
                             </button>
                         </form>
                     </div>

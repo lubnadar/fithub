@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Play,
     CheckCircle2,
@@ -13,6 +14,8 @@ import {
 } from 'lucide-react';
 
 const TraineeDashboard = () => {
+    const navigate = useNavigate(); // أضف هذا السطر هنا
+
     const [exercises, setExercises] = useState([
         {
             id: 1,
@@ -76,7 +79,7 @@ const TraineeDashboard = () => {
     };
 
     const handleExerciseClick = (exerciseId) => {
-        console.log(`Navigate to exercise detail: ${exerciseId}`);
+        navigate(`/trainee/exercise/${exerciseId}`);
     };
 
     const handleStartWithAI = () => {
@@ -218,11 +221,15 @@ const TraineeDashboard = () => {
 
                                             {exercise.completed && (
                                                 <button
-                                                    onClick={handleStartWithAI}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleStartWithAI();
+                                                    }}
                                                     className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-indigo-400/20 text-indigo-400 hover:bg-indigo-400/30"
                                                 >
                                                     <Zap className="w-4 h-4" />
                                                     <span className="text-sm font-medium">Start with AI</span>
+
                                                 </button>
                                             )}
                                         </div>
@@ -239,4 +246,4 @@ const TraineeDashboard = () => {
     );
 };
 
-export default TraineeDashboard;
+export default TraineeDashboard; 

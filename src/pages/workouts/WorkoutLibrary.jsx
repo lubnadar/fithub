@@ -310,7 +310,7 @@ const WorkoutLibrary = () => {
 
     // Handle navigate to exercise detail page
     const handleExerciseClick = (exerciseId) => {
-        navigate(`/trainee/exercise/${exerciseId}`);
+        navigate('/trainee/exercise-detail');
     };
 
     const filteredExercises = useMemo(() => {

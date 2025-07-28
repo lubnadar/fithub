@@ -30,7 +30,7 @@ export default function TraineeNavbar() {
                         </div>
                     </Link>
 
-                    <Link to="/community" className="text-slate-300 hover:text-white transition-colors">
+                    <Link to="/trainee/community" className="text-slate-300 hover:text-white transition-colors">
                         <div className="flex items-center space-x-2">
                             <Users size={20} />
                             <span>Community</span>
@@ -51,7 +51,7 @@ export default function TraineeNavbar() {
                         </div>
                     </Link>
 
-                    <Link to="/coach/:id" className="text-slate-300 hover:text-white transition-colors">
+                    <Link to="/trainee/profile" className="text-slate-300 hover:text-white transition-colors">
                         <div className="flex items-center space-x-2">
                             <User size={20} />
                             <span>Profile</span>
