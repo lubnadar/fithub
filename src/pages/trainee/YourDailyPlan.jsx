@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Play,
@@ -71,6 +71,18 @@ const TraineeDashboard = () => {
     const completedCount = exercises.filter(ex => ex.completed).length;
     const totalCount = exercises.length;
     const allCompleted = completedCount === totalCount;
+
+    // إضافة useEffect لمراقبة اكتمال جميع التمارين
+    useEffect(() => {
+        if (allCompleted && completedCount > 0) {
+            // تأخير بسيط لإظهار التحديث قبل الانتقال
+            const timer = setTimeout(() => {
+                navigate('/trainee/workout-done');
+            }, 1500); // انتظار 1.5 ثانية
+
+            return () => clearTimeout(timer);
+        }
+    }, [allCompleted, completedCount, navigate]);
 
     const toggleExerciseStatus = (id) => {
         setExercises(prev => prev.map(ex =>
@@ -246,4 +258,4 @@ const TraineeDashboard = () => {
     );
 };
 
-export default TraineeDashboard; 
+export default TraineeDashboard;

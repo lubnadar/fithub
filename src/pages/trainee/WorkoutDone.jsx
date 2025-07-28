@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Check, Share2, ArrowLeft, Trophy, Zap, Target } from 'lucide-react';
 
 const WorkoutDone = () => {
+    const navigate = useNavigate();
     const [shareWithCoach, setShareWithCoach] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [animate, setAnimate] = useState(false);
@@ -11,9 +13,7 @@ const WorkoutDone = () => {
     }, []);
 
     const handleReturnToPlan = () => {
-        // In a real app, this would use React Router navigation
-        // navigate('/trainee/private-plan');
-        console.log('Navigating to private plan...');
+        navigate('/trainee/dashboard');
     };
 
     const handleShareToggle = () => {
@@ -135,7 +135,7 @@ const WorkoutDone = () => {
                             className="group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25 flex items-center gap-3 mx-auto"
                         >
                             <ArrowLeft className="w-6 h-6 transition-transform duration-300 group-hover:-translate-x-1" />
-                            Return to Plan
+                            Done
                         </button>
                     </div>
 

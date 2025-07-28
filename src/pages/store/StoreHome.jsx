@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ShoppingBag } from 'lucide-react';
 
 const ProductCard = ({ product, onBuyClick }) => {
     return (
@@ -26,7 +27,7 @@ const ProductCard = ({ product, onBuyClick }) => {
                 </p>
                 <button
                     onClick={(e) => {
-                        e.stopPropagation(); // حتى لا يعمل الكارد والزر معاً
+                        e.stopPropagation();
                         onBuyClick(product.id);
                     }}
                     className="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded px-3 py-1.5 transition-colors duration-200 font-medium text-sm"
@@ -47,11 +48,20 @@ const StoreHome = () => {
     const productsPerPage = 12;
     const navigate = useNavigate();
 
+    // Mock user data - في التطبيق الحقيقي ستأتي من context أو API
+    const [user, setUser] = useState({
+        isVendor: false, // تغيير هذا إلى true لإخفاء الزر
+        name: 'John Doe'
+    });
+
     const handleBuyClick = (productId) => {
         navigate(`/store/product/${productId}`);
     };
 
-    // mockProducts تبقى كما هي
+    const handleMyOrdersClick = () => {
+        navigate('/trainee/my-orders');
+    };
+
     // Mock data - Extended to show more products
     const mockProducts = [
         { id: 1, name: 'Whey Protein Powder', price: 49.99, seller: 'NutraFit', image: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=300&h=300&fit=crop', category: 'Supplements' },
@@ -96,7 +106,6 @@ const StoreHome = () => {
         { id: 40, name: 'Joint Support Formula', price: 29.99, seller: 'JointHealth', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300&h=300&fit=crop', category: 'Supplements' }
     ];
 
-
     useEffect(() => {
         setProducts(mockProducts);
         setFilteredProducts(mockProducts);
@@ -127,9 +136,21 @@ const StoreHome = () => {
     return (
         <div className="min-h-screen bg-slate-900 text-white">
             <div className="container mx-auto px-4 py-8">
-                <div className="text-center mb-8">
+                {/* Header with My Shopping Cart Button */}
+                <div className="text-center mb-8 relative">
                     <h1 className="text-2xl font-semibold mb-2">FitHub Store</h1>
                     <p className="text-gray-300">Explore top supplements, gear, and tools for your fitness journey</p>
+
+                    {/* My Shopping Cart Button - يظهر فقط للمستخدمين غير البائعين */}
+                    {!user.isVendor && (
+                        <button
+                            onClick={handleMyOrdersClick}
+                            className="absolute top-0 right-0 flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium shadow-lg hover:shadow-xl"
+                        >
+                            <ShoppingBag size={18} />
+                            My Shopping Cart
+                        </button>
+                    )}
                 </div>
 
                 {/* Filters */}
