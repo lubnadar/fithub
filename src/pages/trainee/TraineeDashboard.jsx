@@ -229,11 +229,11 @@ const TraineeDashboard = () => {
                             <span>View Full Plan</span>
                         </button>
                         <button
-                            onClick={() => handleNavigation("/trainee/ai-tracker")}
+                            onClick={() => handleNavigation("/trainee/ai-assistant")}
                             className="flex-1 bg-gradient-to-r from-emerald-400 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-emerald-500 hover:to-blue-600 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-emerald-400/25"
                         >
                             <Zap className="w-5 h-5" />
-                            <span>Track with AI</span>
+                            <span>Chat with AI</span>
                         </button>
                     </div>
                 </div>

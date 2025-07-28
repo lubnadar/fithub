@@ -34,6 +34,7 @@ import TraineeEntryPoint from "./pages/trainee/TraineeEntryPoint";
 import YourDailyPlan from "./pages/trainee/YourDailyPlan";
 import TraineeCommunity from "./pages/trainee/TraineeCommunity"; // ✅ إضافة
 import DocumaintationExerciseDetail from './pages/trainee/Documaintation-ExerciseDetail';
+import AiChatAssistant from "./pages/trainee/AiChatAssistant";
 
 
 
@@ -86,7 +87,7 @@ const HIDE_FOOTER_PATHS = [
   '/dashboard-selector', '/trainee/setup', '/coach/setup', '/seller/setup', '/notifications',
   "/chat", "/trainee/profile", "/coach/request-new-exercise", "/store/dashboard", "/store/add-product", "/coach/plans/create",
   "/store/product/:id", "/checkout", "/trainee/daily-plan", "/trainee/workout-done", "/store/my-orders", "/trainee/exercise/:id",
-  "/trainee/ai-tracker"
+  "/trainee/ai-tracker", "/trainee/ai-assistant",
 ];
 
 export default function App() {
@@ -142,6 +143,8 @@ export default function App() {
           <Route path="/trainee/community" element={<TraineeCommunity />} />
           <Route path="/trainee/exercise-detail" element={<DocumaintationExerciseDetail />} />
           <Route path="/trainee/my-orders" element={<MyOrders />} />
+          <Route path="/trainee/ai-assistant" element={<AiChatAssistant />} />
+
 
 
 

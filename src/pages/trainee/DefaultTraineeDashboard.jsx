@@ -150,20 +150,21 @@ const DefaultTraineeDashboard = () => {
             <div className="p-2 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg">
               <HelpCircle className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-white">Need Help?</h2>
+            <h2 className="text-xl font-bold text-white">Chat with AI Assistant</h2>
           </div>
           <p className="text-gray-300 mb-4">
-            Have questions about getting started? Our support team is here to help you every step of the way.
+            Have questions about getting started or where started?
+            Connect with Our AI Assistant or support team to help you.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button className="px-6 py-2 bg-white/10 text-white rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-300">
-              Contact Support
-            </button>
-            <button className="px-6 py-2 bg-white/10 text-white rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-300">
-              View FAQ
-            </button>
+          <div className="flex justify-center">
+            <Link to="/trainee/ai-assistant">
+              <button className="px-6 py-2 bg-white/10 text-white rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-300">
+                Let's start
+              </button>
+            </Link>
           </div>
         </div>
+
 
         {/* Motivational Quote */}
         <div className="mt-8 text-center">
