@@ -40,7 +40,9 @@ const PrivateTrainingRequest = ({ coach }) => {
     const handleContinue = () => {
         setShowSuccess(false);
         navigate('/trainee/request-history'); // ✅ التوجيه إلى صفحة "طلباتي"
+        navigate('/trainee/default-dashboard');
     };
+
 
     return (
         <>
@@ -63,6 +65,10 @@ const PrivateTrainingRequest = ({ coach }) => {
                             <h1 className="text-3xl font-bold text-white mb-2">Request Private Training</h1>
                             <p className="text-slate-300">Send a message to start your personalized training journey</p>
                         </div>
+
+
+
+
 
                         {/* Success State */}
                         {showSuccess ? (

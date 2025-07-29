@@ -1,11 +1,13 @@
 // src/pages/workouts/WorkoutLibrary.jsx
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, X, ChevronLeft, ChevronRight, Target, Dumbbell, Play, Clock, BarChart3 } from 'lucide-react';
+import { Search, Filter, X, ChevronLeft, ChevronRight, ArrowLeft, Target, Dumbbell, Play, Clock, BarChart3 } from 'lucide-react';
 import CoachSidebar from '../../components/layout/CoachNavbar';
 import TraineeSidebar from '../../components/layout/TraineeSidebar';
+//import { useNavigate } from 'react-router-dom';
 
 // Mock workout data
 const generateWorkouts = () => {
+    //const navigate = useNavigate();
     const workouts = [];
     const names = ['Push-Up Challenge', 'Squat Progression', 'Deadlift Mastery', 'Bench Press Power',
         'Pull-Up Strength', 'Plank Endurance', 'Burpee Blast', 'Tricep Dips',
@@ -278,7 +280,16 @@ const WorkoutLibrary = () => {
                     {/* Header */}
                     <div className="mb-8">
                         <div className="flex items-center justify-between mb-4">
+                            {/* Back Button */}
+                            <button
+                                onClick={() => navigate('/your/target/path')}
+                                className="text-white/60 hover:text-white transition-colors mb-1"
+                            >
+                                <ArrowLeft size={24} />
+                            </button>
+
                             <h1 className="text-3xl font-bold text-white">Workout Library</h1>
+
                             <button
                                 onClick={() => setIsFilterOpen(true)}
                                 className="md:hidden bg-slate-800 text-slate-400 hover:text-white px-4 py-2 rounded-lg border border-slate-700 hover:border-blue-500 transition-colors flex items-center gap-2"
@@ -286,6 +297,7 @@ const WorkoutLibrary = () => {
                                 <Filter className="w-4 h-4" /> Filters
                             </button>
                         </div>
+
 
                         {/* Search Bar */}
                         <div className="relative max-w-md">

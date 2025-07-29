@@ -5,6 +5,8 @@ import {
     Dumbbell, Users, AlertCircle, TrendingUp, Star, Check, X, Menu
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+//import { useNavigate } from 'react-router-dom';
+
 
 export default function PlansOverview() {
     const plans = [

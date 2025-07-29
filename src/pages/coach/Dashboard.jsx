@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Users, FileText, BookOpen, Plus, Calendar } from 'lucide-react';
+import { Users, FileText, BookOpen, ArrowLeft, Plus, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom'; // ✅ الاستيراد اللازم للتنقل
+
 
 // بيانات وهمية للمدرب
 const mockCoachData = {

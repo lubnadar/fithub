@@ -165,7 +165,6 @@ const DefaultTraineeDashboard = () => {
           </div>
         </div>
 
-
         {/* Motivational Quote */}
         <div className="mt-8 text-center">
           <blockquote className="text-lg text-gray-300 italic max-w-2xl mx-auto">

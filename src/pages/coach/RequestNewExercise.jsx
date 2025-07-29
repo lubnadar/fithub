@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Upload, Dumbbell, CheckCircle, X } from 'lucide-react';
+import { Upload, Dumbbell, ArrowLeft, CheckCircle, X } from 'lucide-react';
+//import { useNavigate } from 'react-router-dom';
 
 export default function RequestNewExercise() {
     const [formData, setFormData] = useState({

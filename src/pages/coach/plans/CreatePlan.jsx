@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronUp, Plus, X, GripVertical, Save, ArrowLeft, Calendar, Clock, Target, User } from 'lucide-react';
 
 const CreatePlan = () => {
+    const navigate = useNavigate();
     const [planName, setPlanName] = useState('');
     const [expandedDay, setExpandedDay] = useState(1);
     const [planDays, setPlanDays] = useState(() => {
@@ -198,7 +200,10 @@ const CreatePlan = () => {
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <button className="flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-4">
+                    <button
+                        onClick={() => navigate('/coach/dashboard')}
+                        className="flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-4"
+                    >
                         <ArrowLeft size={20} />
                         Back to Dashboard
                     </button>

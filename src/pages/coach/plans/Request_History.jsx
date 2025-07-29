@@ -9,8 +9,11 @@ import {
     Ban,
     X,
     Send,
-    Filter
+    Filter,
+    ArrowLeft
 } from 'lucide-react';
+//import { useNavigate } from 'react-router-dom';
+
 
 const RequestHistory = () => {
     // Mock data for subscription requests
@@ -166,8 +169,8 @@ const RequestHistory = () => {
                                 key={filter}
                                 onClick={() => setActiveFilter(filter)}
                                 className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${activeFilter === filter
-                                        ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-                                        : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 hover:text-white'
+                                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
+                                    : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 hover:text-white'
                                     }`}
                             >
                                 {filter}

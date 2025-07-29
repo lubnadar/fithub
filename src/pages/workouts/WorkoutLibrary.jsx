@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, Filter, Dumbbell, Target, Clock } from 'lucide-react';
+import { Search, Filter, Dumbbell, Target, ArrowLeft, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+
+
 
 const mockExercises = [
     {
@@ -239,12 +241,16 @@ const mockExercises = [
     },
 ];
 
+
+
 const muscleGroups = ["All", "Chest", "Back", "Legs", "Arms", "Shoulders", "Core"];
 const equipmentTypes = ["All", "Bodyweight", "Dumbbell", "Barbell", "Machine", "Pull-up Bar", "Cable"];
 
 const EXERCISES_PER_PAGE = 12;
 
 const ExerciseCard = ({ exercise, onViewDetails }) => {
+
+
     const getDifficultyColor = (difficulty) => {
         switch (difficulty) {
             case 'Beginner': return 'text-green-400 bg-green-400/10';
@@ -302,11 +308,12 @@ const ExerciseCard = ({ exercise, onViewDetails }) => {
 };
 
 const WorkoutLibrary = () => {
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedMuscle, setSelectedMuscle] = useState('All');
     const [selectedEquipment, setSelectedEquipment] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
-    const navigate = useNavigate();
+
 
     // Handle navigate to exercise detail page
     const handleExerciseClick = (exerciseId) => {
@@ -366,8 +373,18 @@ const WorkoutLibrary = () => {
     return (
 
         <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+
+
             {/* Header */}
             <div className="relative overflow-hidden">
+                {/* Back Button */}
+                <button
+                    onClick={() => navigate("/coach/dashboard")}
+                    className="absolute top-4 left-4 text-white/60 hover:text-white transition-colors z-10"
+                >
+                    <ArrowLeft size={28} />
+                </button>
+
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-emerald-600/20 backdrop-blur-3xl" />
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     <div className="text-center">
@@ -380,6 +397,16 @@ const WorkoutLibrary = () => {
                     </div>
                 </div>
             </div>
+
+
+
+
+
+
+
+
+
+
 
             {/* Search and Filters */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

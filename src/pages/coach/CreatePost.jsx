@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Camera, X, Save, Send, Trash2, Upload, User } from 'lucide-react';
+import { Camera, X, Save, ArrowLeft, Send, Trash2, Upload, User } from 'lucide-react';
+//import { useNavigate } from 'react-router-dom';
+
 
 const CreatePost = () => {
     const [formData, setFormData] = useState({
@@ -125,8 +127,8 @@ const CreatePost = () => {
                 {/* Message Display */}
                 {message.text && (
                     <div className={`mb-6 p-4 rounded-lg backdrop-blur-sm transition-all duration-300 ${message.type === 'success'
-                            ? 'bg-green-500/20 border border-green-500/30 text-green-200'
-                            : 'bg-red-500/20 border border-red-500/30 text-red-200'
+                        ? 'bg-green-500/20 border border-green-500/30 text-green-200'
+                        : 'bg-red-500/20 border border-red-500/30 text-red-200'
                         }`}>
                         {message.text}
                     </div>

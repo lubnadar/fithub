@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { X, Info, Clock, Weight, FileText, Repeat } from 'lucide-react';
+import { X, Info, Clock, Weight, FileText, ArrowLeft, Repeat } from 'lucide-react';
+//import { useNavigate } from 'react-router-dom';
+
 
 const EditExerciseModal = ({
     isOpen,
