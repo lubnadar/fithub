@@ -35,6 +35,8 @@ import YourDailyPlan from "./pages/trainee/YourDailyPlan";
 import TraineeCommunity from "./pages/trainee/TraineeCommunity"; // ✅ إضافة
 import DocumaintationExerciseDetail from './pages/trainee/Documaintation-ExerciseDetail';
 import AiChatAssistant from "./pages/trainee/AiChatAssistant";
+import FinalCoachRating from './pages/trainee/FinalCoachRating';
+
 
 
 
@@ -46,6 +48,10 @@ import CreatePost from "./pages/coach/CreatePost";
 import ManageRequests from "./pages/coach/ManageRequests";
 import RequestNewExercise from "./pages/coach/RequestNewExercise";
 import CoachCommunity from "./pages/coach/CoachCommunity";
+import AddCertification from './pages/coach/AddCertification';
+import AssignPlan from './pages/coach/AssignPlan';
+import EditExerciseModalDemo from "./pages/coach/EditExerciseModal";
+import ActiveSubscriptions from './pages/coach/ActiveSubscriptions';
 
 // Coach Plans
 import PlansOverview from "./pages/coach/plans/PlansOverview";
@@ -79,7 +85,7 @@ const HIDE_NAVBAR_PATHS = [
   '/dashboard-selector', '/trainee/setup', '/coach/setup',
   '/workout-library', '/seller/setup', "/trainee/profile", "/store/product/:id",
   "/store/add-product", "/coach/plans/create", "/checkout", "/trainee/daily-plan", "/trainee/workout-done", "/store/my-orders"
-  , "/trainee/ai-tracker"
+  , "/trainee/ai-tracker", "/trainee/my-orders"
 ];
 
 const HIDE_FOOTER_PATHS = [
@@ -87,7 +93,8 @@ const HIDE_FOOTER_PATHS = [
   '/dashboard-selector', '/trainee/setup', '/coach/setup', '/seller/setup', '/notifications',
   "/chat", "/trainee/profile", "/coach/request-new-exercise", "/store/dashboard", "/store/add-product", "/coach/plans/create",
   "/store/product/:id", "/checkout", "/trainee/daily-plan", "/trainee/workout-done", "/store/my-orders", "/trainee/exercise/:id",
-  "/trainee/ai-tracker", "/trainee/ai-assistant",
+  "/trainee/ai-tracker", "/trainee/ai-assistant", "/trainee/my-orders", "/trainee/final-rating", "/coach/add-certification"
+  , "/coach/AssignPlan/:planId", "/coach/edit-exercise/:planId"
 ];
 
 export default function App() {
@@ -144,6 +151,9 @@ export default function App() {
           <Route path="/trainee/exercise-detail" element={<DocumaintationExerciseDetail />} />
           <Route path="/trainee/my-orders" element={<MyOrders />} />
           <Route path="/trainee/ai-assistant" element={<AiChatAssistant />} />
+          <Route path="/trainee/final-rating" element={<FinalCoachRating />} />
+          <Route path="/coach/add-certification" element={<AddCertification />} />
+
 
 
 
@@ -162,6 +172,10 @@ export default function App() {
           <Route path="/coach/plans/day/:id" element={<PlanDayView />} />
           <Route path="/coach/requests-history" element={<RequestHistoryCoach />} />
           <Route path="/coach/community" element={<CoachCommunity />} />
+          <Route path="/coach/AssignPlan/:planId" element={<AssignPlan />} />
+          <Route path="/coach/edit-exercise/:planId" element={<EditExerciseModalDemo />} />
+          <Route path="/coach/active-subscriptions" element={<ActiveSubscriptions />} />
+
 
           {/* Store */}
           <Route path="/store" element={<StoreHome />} />

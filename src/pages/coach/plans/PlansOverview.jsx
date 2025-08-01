@@ -116,7 +116,10 @@ export default function PlansOverview() {
                                     {plans.map((plan) => (
                                         <tr key={plan.id} className="hover:bg-slate-800/30 transition-colors duration-200">
                                             <td className="p-4">
-                                                <div className="flex items-center space-x-3">
+                                                <Link
+                                                    to={`/coach/AssignPlan/${plan.id}`}
+                                                    className="flex items-center space-x-3 hover:text-blue-400 transition-colors duration-200"
+                                                >
                                                     <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">
                                                         <Dumbbell className="w-5 h-5 text-white" />
                                                     </div>
@@ -124,7 +127,7 @@ export default function PlansOverview() {
                                                         <p className="font-medium">{plan.title}</p>
                                                         <p className="text-slate-400 text-sm">by {plan.coach}</p>
                                                     </div>
-                                                </div>
+                                                </Link>
                                             </td>
                                             <td className="p-4 text-slate-300">{plan.duration}</td>
                                             <td className="p-4">
